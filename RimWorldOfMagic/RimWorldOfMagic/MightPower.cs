@@ -64,6 +64,8 @@ namespace TorannMagic
             get
             {
                 SetMaxLevel();
+                if (level < 0 || level >= this.TMabilityDefs.Count)
+                    return null;
                 return this.TMabilityDefs[level];                
             }
         }

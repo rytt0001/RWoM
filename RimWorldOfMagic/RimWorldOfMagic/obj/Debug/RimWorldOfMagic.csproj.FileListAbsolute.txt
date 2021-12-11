@@ -10,3 +10,17 @@ E:\Programs\Steam\steamapps\common\RimWorld\Mods\RWoM\RimWorldOfMagic\RimWorldOf
 E:\Programs\Steam\steamapps\common\RimWorld\Mods\RWoM\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\TorannMagic.dll
 E:\Programs\Steam\steamapps\common\RimWorld\Mods\RWoM\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\TorannMagic.pdb
 E:\Programs\Steam\steamapps\common\RimWorld\Mods\RWoM\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\RimWorldOfMagic.csprojAssemblyReference.cache
+C:\Users\Rytt\Desktop\RWoM-main\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\RimWorldOfMagic.csproj.AssemblyReference.cache
+C:\Users\Rytt\Desktop\RWoM-main\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\RimWorldOfMagic.csproj.CoreCompileInputs.cache
+C:\Users\Rytt\Desktop\RWoM-main\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\TorannMagic.dll
+C:\Users\Rytt\Desktop\RWoM-main\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\TorannMagic.pdb
+C:\Users\Rytt\Desktop\RWoM-main\v1.3\Assemblies\TorannMagic.dll
+C:\Users\Rytt\Desktop\RWoM-main\v1.3\Assemblies\TorannMagic.pdb
+C:\Users\Rytt\Desktop\RWoM-main\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\RimWorldOfMagic.csproj.CopyComplete
+E:\steam\steamapps\common\RimWorld\Mods\__LocalCopy_A RimWorld of Magic_-27-11\v1.3\Sources\RWoM\v1.3\Assemblies\TorannMagic.dll
+E:\steam\steamapps\common\RimWorld\Mods\__LocalCopy_A RimWorld of Magic_-27-11\v1.3\Sources\RWoM\v1.3\Assemblies\TorannMagic.pdb
+E:\steam\steamapps\common\RimWorld\Mods\__LocalCopy_A RimWorld of Magic_-27-11\v1.3\Sources\RWoM\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\RimWorldOfMagic.csproj.AssemblyReference.cache
+E:\steam\steamapps\common\RimWorld\Mods\__LocalCopy_A RimWorld of Magic_-27-11\v1.3\Sources\RWoM\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\RimWorldOfMagic.csproj.CoreCompileInputs.cache
+E:\steam\steamapps\common\RimWorld\Mods\__LocalCopy_A RimWorld of Magic_-27-11\v1.3\Sources\RWoM\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\RimWorldOfMagic.csproj.CopyComplete
+E:\steam\steamapps\common\RimWorld\Mods\__LocalCopy_A RimWorld of Magic_-27-11\v1.3\Sources\RWoM\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\TorannMagic.dll
+E:\steam\steamapps\common\RimWorld\Mods\__LocalCopy_A RimWorld of Magic_-27-11\v1.3\Sources\RWoM\RimWorldOfMagic\RimWorldOfMagic\obj\Debug\TorannMagic.pdb

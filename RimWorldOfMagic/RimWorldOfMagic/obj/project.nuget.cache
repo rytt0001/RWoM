@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "/lmjbOcZQLafcSz8Obmw1A/ped1R9UG84glAMWBIB7p2R7IEFet11MnnBUeLndCoR4xnIE26oeCZdtDhVpnNTg==",
+  "success": true,
+  "projectFilePath": "E:\\steam\\steamapps\\common\\RimWorld\\Mods\\__LocalCopy_A RimWorld of Magic_-27-11\\v1.3\\Sources\\RWoM\\RimWorldOfMagic\\RimWorldOfMagic\\RimWorldOfMagic.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Rytt\\.nuget\\packages\\krafs.rimworld.ref\\1.3.3200\\krafs.rimworld.ref.1.3.3200.nupkg.sha512",
+    "C:\\Users\\Rytt\\.nuget\\packages\\lib.harmony\\2.1.1\\lib.harmony.2.1.1.nupkg.sha512",
+    "C:\\Users\\Rytt\\.nuget\\packages\\unlimitedhugs.rimworld.hugslib\\9.0.1\\unlimitedhugs.rimworld.hugslib.9.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

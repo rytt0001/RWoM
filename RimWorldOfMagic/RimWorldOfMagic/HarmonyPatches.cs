@@ -207,11 +207,12 @@ namespace TorannMagic
                     typeof(bool),
                     typeof(bool)
                 }, null), null, new HarmonyMethod(typeof(TorannMagicMod), "TryStartCastOn_Prefix", null), null);
-            harmonyInstance.Patch(AccessTools.Method(typeof(GenGrid), "InBounds", new Type[]
+            /*harmonyInstance.Patch(AccessTools.Method(typeof(GenGrid), "InBounds", new Type[]
                 {
                     typeof(IntVec3),
                     typeof(Map)
                 }, null), new HarmonyMethod(typeof(TorannMagicMod), "IntVec3Inbounds_NullCheck_Prefix", null), null);
+            */
             //harmonyInstance.Patch(AccessTools.Method(typeof(GenGrid), "InBounds", new Type[]
             //    {
             //        typeof(IntVec3),

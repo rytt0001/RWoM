@@ -200,6 +200,8 @@ namespace TorannMagic
 
         public void CleanFilth()
         {
+            if (this.Map == null)
+                return;
             List<Thing> allThings = new List<Thing>();
             List<Thing> allFilth = new List<Thing>();
             allThings.Clear();
@@ -207,6 +209,8 @@ namespace TorannMagic
             List<IntVec3> cellsAround = GenRadial.RadialCellsAround(this.Position, 1.4f, true).ToList();
             for(int i =0; i < cellsAround.Count; i++)
             {
+                if (cellsAround[i] == null)
+                    continue;
                 allThings = cellsAround[i].GetThingList(this.Map);
                 for(int j = 0; j < allThings.Count; j++)
                 {
