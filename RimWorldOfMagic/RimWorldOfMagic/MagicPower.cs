@@ -65,6 +65,12 @@ namespace TorannMagic
             get
             {
                 SetMaxLevel();
+                if (level < 0 || level > this.maxLevel)
+                {
+                    if (this.TMabilityDefs.Count == 0)
+                        return null;
+                    return this.TMabilityDefs[0];
+                }
                 return this.TMabilityDefs[level];                
             }
         }
@@ -95,14 +101,15 @@ namespace TorannMagic
 
         public AbilityDef GetAbilityDef(int index)
         {
-            try
+            /*try
             {
                 return this.TMabilityDefs[index];
             }
             catch
             {
                 return this.TMabilityDefs[0];
-            }            
+            } */
+            return (index >= 0 && index < this.TMabilityDefs.Count) ? this.TMabilityDefs[index] : (this.TMabilityDefs.Count != 0) ? this.TMabilityDefs[0] : null;
         }
 
         public AbilityDef HasAbilityDef(AbilityDef defToFind)
