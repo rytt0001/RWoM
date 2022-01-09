@@ -66,7 +66,8 @@ namespace TorannMagic
                 this.pawn = this.CasterPawn;
                 launcherPosition = this.CasterPawn.Position;
                 CompAbilityUserMagic comp = pawn.GetComp<CompAbilityUserMagic>();
-                pwrVal = TM_Calc.GetMagicSkillLevel(this.pawn, comp.MagicData.MagicPowerSkill_LightSkip, "TM_LightSkip", "_pwr", false);
+                //pwrVal = TM_Calc.GetMagicSkillLevel(this.pawn, comp.MagicData.MagicPowerSkill_LightSkip, "TM_LightSkip", "_pwr", false);
+                pwrVal = TM_Calc.GetSkillPowerLevel(pawn, TorannMagicDefOf.TM_LightSkip, false);
                 this.arcaneDmg = comp.arcaneDmg;
                 this.draftFlag = this.pawn.drafter != null ? this.pawn.Drafted : false;
                 this.gi = 0;
@@ -85,6 +86,10 @@ namespace TorannMagic
                             {
                                 continue;
                             }
+                        }
+                        if (tmpList[i].carryTracker != null && tmpList[i].carryTracker.CarriedThing != null)
+                        {
+                            tmpList[i].carryTracker.TryDropCarriedThing(tmpList[i].Position, ThingPlaceMode.Near, out Thing _);
                         }
                         pawnList.Add(tmpList[i]);
                     }

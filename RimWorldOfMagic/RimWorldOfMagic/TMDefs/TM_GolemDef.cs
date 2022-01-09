@@ -13,8 +13,10 @@ namespace TorannMagic.TMDefs
         public PawnKindDef golemKindDef = new PawnKindDef();
         public ThingDef golemWorkstationDef = new ThingDef();
         public ThingDef golemStuff = new ThingDef();
+        public string golemFramePath = null;
         public int activationTicks = 240;
         public int processorEvaluationTicks = 100;
+        public float minimumEnergyPctToActivate = .1f;
 
         public List<TM_GolemUpgradeDef> upgrades = new List<TM_GolemUpgradeDef>();
         public List<NeedDef> needs = new List<NeedDef>();
