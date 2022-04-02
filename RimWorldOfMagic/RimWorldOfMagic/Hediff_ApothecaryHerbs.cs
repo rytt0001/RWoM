@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using RimWorld.Planet;
 
 namespace TorannMagic
 {
@@ -35,15 +36,11 @@ namespace TorannMagic
         {
             bool spawned = pawn.Spawned;
             CompAbilityUserMight comp = pawn.GetComp<CompAbilityUserMight>();
-            if (spawned && comp != null)
+            if (comp != null)
             {
                 herbPwr = comp.MightData.MightPowerSkill_Herbalist.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Herbalist_pwr").level;
                 herbVer = comp.MightData.MightPowerSkill_Herbalist.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Herbalist_ver").level;
                 herbEff = comp.MightData.MightPowerSkill_Herbalist.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Herbalist_eff").level;
-            }
-            else
-            {
-                this.removeNow = true;
             }
         }
 
@@ -62,9 +59,18 @@ namespace TorannMagic
                 {
                     Initialize();
                 }
-                if(this.pawn.CurJobDef.defName == "PruneGauranlenTree")
+                if(this.pawn.CurJob != null && this.pawn.CurJobDef.defName == "PruneGauranlenTree")
                 {
                     this.Severity += .4f * (1f + (.1f * herbVer));
+                }
+                if(this.pawn.Map == null && this.pawn.ParentHolder is Caravan)
+                {
+                    Caravan car = this.pawn.ParentHolder as Caravan;
+                    bool flag;
+                    if (!car.NightResting)
+                    {
+                        this.Severity += (ForagedFoodPerDayCalculator.GetBaseForagedNutritionPerDay(this.pawn, out flag)/50f) * (1f + (.05f * herbVer));
+                    }                    
                 }
             }
         }        

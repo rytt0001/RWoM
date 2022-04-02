@@ -52,9 +52,15 @@ namespace TorannMagic
                     RemoveOldBrand(hitPawn);
 
                     HealthUtility.AdjustSeverity(hitPawn, TorannMagicDefOf.TM_ProtectionBrandHD, .05f);
-                    casterComp.BrandedPawns.Add(hitPawn);
+                    if (casterComp.BrandedPawns != null)
+                    {
+                        casterComp.BrandedPawns.Add(hitPawn);
+                    }
                     Hediff newBrand = hitPawn.health.hediffSet.GetFirstHediffOfDef(TorannMagicDefOf.TM_ProtectionBrandHD);
-                    newBrand.TryGetComp<HediffComp_BrandingProtection>().BranderPawn = caster;
+                    if (newBrand != null && newBrand.TryGetComp<HediffComp_BrandingProtection>() != null)
+                    {
+                        newBrand.TryGetComp<HediffComp_BrandingProtection>().BranderPawn = caster;
+                    }
 
                     TargetInfo ti = new TargetInfo(hitPawn.Position, hitPawn.Map, false);
                     TM_MoteMaker.MakeOverlay(ti, TorannMagicDefOf.TM_Mote_PsycastAreaEffect, hitPawn.Map, Vector3.zero, .1f, 0f, .1f, .3f, .3f, -2f);

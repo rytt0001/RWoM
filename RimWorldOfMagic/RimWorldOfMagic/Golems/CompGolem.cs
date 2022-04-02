@@ -30,10 +30,31 @@ namespace TorannMagic.Golems
         public bool followsMasterDrafted = false;
         public bool remainDormantWhenUpgrading = true;
         public bool useAbilitiesWhenDormant = true;
+        public bool checkThreatPath = false;
 
         public float minEnergyPctForAbilities = .2f;
         public float energyPctShouldRest = .1f;
         public float energyPctShouldAwaken = 1f;
+        private Name golemName = NameTriple.FromString("Blank");
+        public Name GolemName
+        {
+            get
+            {
+                if(golemName == null)
+                {
+                    golemName = NameTriple.FromString("Blank");
+                }
+                if(golemName.ToString() == "")
+                {
+                    golemName = NameTriple.FromString("Blank");
+                }
+                return golemName;
+            }
+            set
+            {
+                golemName = value;
+            }
+        }
 
         public List<TM_GolemAbility> abilityList = new List<TM_GolemAbility>();
 
@@ -58,6 +79,52 @@ namespace TorannMagic.Golems
                 }
                 return threatTarget;
             }
+        }
+
+        public bool TargetIsValid(Thing source, LocalTargetInfo target)
+        {
+            if (target == null)
+            {
+                return false;
+            }
+            if (target.HasThing)
+            {
+                Thing targetThing = target.Thing;
+                if (targetThing.DestroyedOrNull())
+                {
+                    return false;
+                }
+                if (!targetThing.Spawned)
+                {
+                    return false;
+                }
+                if (targetThing is Pawn)
+                {
+                    Pawn p = targetThing as Pawn;
+                    if (p.Dead || p.Downed)
+                    {
+                        return false;
+                    }
+                    if (checkThreatPath && p.CanReach(source, PathEndMode.ClosestTouch, Danger.Deadly, false, false, TraverseMode.PassDoors))
+                    {
+                        return false;
+                    }
+                }
+                if (!GenHostility.HostileTo(source, targetThing))
+                {
+                    return false;
+                }
+            }
+            if (target.Cell.DistanceToEdge(source.Map) < 8)
+            {
+                return false;
+            }
+            if (checkThreatPath && !target.Cell.InAllowedArea(Pawn))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         //unsaved variables
@@ -182,6 +249,7 @@ namespace TorannMagic.Golems
             Scribe_Values.Look<float>(ref this.energyPctShouldRest, "energyPctShouldRest", .1f);
             Scribe_Values.Look<float>(ref this.minEnergyPctForAbilities, "minEnergyForAbilities", .2f);
             Scribe_Values.Look<float>(ref this.energyPctShouldAwaken, "energyPctShouldAwaken", 1f);
+            Scribe_Deep.Look<Name>(ref this.golemName, "golemName");
         }
 
         public bool AbilityActive => abilityTick <= abilityMaxTicks;
@@ -293,14 +361,21 @@ namespace TorannMagic.Golems
             if (Pawn.playerSettings != null)
             {
                 Pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
-                threatTarget = InnerWorkstation.ThreatTarget;
+                if (InnerWorkstation.ThreatTarget != null && (InnerWorkstation.ThreatTarget.Position - Pawn.Position).LengthHorizontal <= threatRange)
+                {
+                    threatTarget = InnerWorkstation.ThreatTarget;
+                }
+                else
+                {
+                    threatTarget = null;
+                }
             }
             actionTickAverage80 = 3 * Golem.processorEvaluationTicks;
             ClearHediffs();
             ApplyNeeds();
             ApplyUpgrades();
-            ApplyDamages();
-            DeSpawnGolemWorkstation();
+            ApplyDamages();            
+            DeSpawnGolemWorkstation();             
             PawnGolem.PostGolemActivate();
         }
 
@@ -474,7 +549,7 @@ namespace TorannMagic.Golems
         {
             if (!dormantThing.DestroyedOrNull() && dormantThing.Spawned)
             {
-                if(dormantThing.ThreatTarget != null)
+                if (dormantThing.ThreatTarget != null && (dormantThing.ThreatTarget.Position - Pawn.Position).LengthHorizontal <= threatRange)
                 {
                     Job job = new Job(JobDefOf.AttackMelee, dormantThing.ThreatTarget);
                     Pawn.jobs.StartJob(job, JobCondition.InterruptForced);
@@ -630,8 +705,7 @@ namespace TorannMagic.Golems
                         foreach (CompProperties_GolemAbilityEffect effectDef in activeAbility.golemAbilityDef.effects)
                         {
                             if (effectDef.CanApplyOn(abilityTarget, Pawn, activeAbility.golemAbilityDef))
-                            {
-                                Log.Message(" " + activeAbility.golemAbilityDef.defName);
+                            {                               
                                 effectDef.Apply(abilityTarget, Pawn, activeAbility.golemAbilityDef, activeAbility.currentLevel, DamageModifier);
                             }
                             else

@@ -119,6 +119,7 @@ namespace TorannMagic
         public static ThingDef SpellOf_Discord;
         public static ThingDef SpellOf_BrandSiphon;
         public static ThingDef SpellOf_LivingWall;
+        public static ThingDef SpellOf_HeatShield;
 
         public static ThingDef SkillOf_Sprint;
         public static ThingDef SkillOf_GearRepair;
@@ -200,6 +201,10 @@ namespace TorannMagic
         public static TraitDef TM_OKWithDeath;
         public static TraitDef TM_ManaWellTD;
         public static TraitDef TM_ArcaneConduitTD;
+        public static TraitDef TM_FaeBloodTD;
+        public static TraitDef TM_EnlightenedTD;
+        public static TraitDef TM_CursedTD;
+        public static HediffDef TM_CursedHD;
 
         //Wanderer
         public static TraitDef TM_Wanderer;
@@ -258,6 +263,7 @@ namespace TorannMagic
         public static ThingDef TM_Blizzard_Small;
         public static ThingDef TM_Blizzard_Tiny;
         public static ThingDef TM_Blizzard_Large;
+        public static ThingDef TM_Hail;
 
         //Lightning
         public static TraitDef StormBorn;
@@ -714,6 +720,7 @@ namespace TorannMagic
         public static HediffDef TM_GolemancyEfficiencyHD;
         public static TMAbilityDef TM_RuneCarving;
         public static HediffDef TM_RuneCarvedPartHD;
+        public static HediffDef TM_ArcaneTatooPartHD;
         public static StatDef TM_RuneCarvingEfficiency;
         public static EffecterDef TM_RuneCarving_EffecterED;
         public static RecipeDef TM_RuneCarveBodyPart;
@@ -754,6 +761,10 @@ namespace TorannMagic
         public static ThoughtDef TM_PositiveEmpathyTD;
         public static ThoughtDef TM_NegativeEmpathyTD;
         public static ThoughtDef TM_EmotionalWeightTD;
+        public static TMAbilityDef TM_Symbiosis;
+        public static HediffDef TM_SymbiosisHD;
+        public static HediffDef TM_OutOfBodyHD;
+        public static TMAbilityDef TM_FadeEmotions;
 
         //Shadow
         public static TraitDef TM_TheShadow;
@@ -784,6 +795,7 @@ namespace TorannMagic
 
         public static TraitDef PhysicalProdigy;
         public static TraitDef TM_BoundlessTD;
+        public static TraitDef TM_GiantsBloodTD;
         public static ThoughtDef TM_OpinionOfBoundless;
 
         //Wayfarer
@@ -802,6 +814,11 @@ namespace TorannMagic
         public static TMAbilityDef TM_Elixir;
         public static TMAbilityDef TM_SoothingBalm;
         public static HediffDef TM_SoothingBalmHD;
+        public static TMAbilityDef TM_FireSuppressionFlask;
+        public static TMAbilityDef TM_HerbalClarity;
+        public static HediffDef TM_HerbalClarityHD;
+        public static TMAbilityDef TM_HerbalBliss;
+        public static HediffDef TM_HerbalBlissHD;
 
         //Might (Gladiator)
         public static TraitDef Gladiator;
@@ -1062,12 +1079,15 @@ namespace TorannMagic
         public static TMAbilityDef TM_Taunt;
         public static HediffDef TM_TauntHD;
         public static TMAbilityDef TM_Discord;
+        public static HediffDef TM_FrailtyHD;
+        public static TMAbilityDef TM_HeatShield;
+        public static HediffDef TM_HeatShieldHD;
 
         public static HediffDef TM_Sight;
         public static HediffDef TM_Breathing;
         public static HediffDef TM_Manipulation;
         public static HediffDef TM_Movement;
-        public static HediffDef TM_HasteHD;
+        public static HediffDef TM_HasteHD;        
 
         public static HediffDef TM_AntiSight;
         public static HediffDef TM_AntiBreathing;
@@ -1251,6 +1271,7 @@ namespace TorannMagic
         public static EffecterDef TM_FadeEffecterED;
         public static EffecterDef TM_FadeEffecter2ED;
         public static EffecterDef TM_AttractionEffecterSmall;
+        public static EffecterDef TM_HeatShieldED;
 
         //psychast copies, used with tm_motemaker.makeoverlay
         //adjusts def values on each cast
@@ -1394,9 +1415,12 @@ namespace TorannMagic
         //public static ThoughtDef AteMysteryMeatAsIngredient;
         public static ThoughtDef TM_SeverMagic_ForApproveTD;
         public static ThoughtDef TM_SeverMagic_ForVeneratedTD;
+        public static ThoughtDef ObservedLayingCorpse;
+        public static ThoughtDef ObservedLayingRottingCorpse;
 
         //WeatherDefs
         public static WeatherDef TM_HealingRainWD;
+        public static WeatherDef TM_HailstormWD;
 
         //Factions
         public static FactionDef TM_SkeletalFaction;
@@ -1475,7 +1499,19 @@ namespace TorannMagic
         public static HediffDef TM_DeathFieldHD;
         public static ThingDef TM_HollowGolem_Workstation;
         public static TMDefs.TM_GolemUpgradeDef TM_Golem_HollowOrbOfExtinguishedFlames;
+        public static ThingDef TM_StoneGolem;
+        public static ThingDef TM_SandstoneGolem;
+        public static ThingDef TM_LimestoneGolem;
+        public static ThingDef TM_SlateGolem;
+        public static ThingDef TM_MarbleGolem;
+        public static ThingDef TM_GraniteGolem;
+        public static PawnKindDef TM_StoneGolemK;
+        public static PawnKindDef TM_SandstoneGolemK;
+        public static PawnKindDef TM_LimestoneGolemK;
+        public static PawnKindDef TM_SlateGolemK;
+        public static PawnKindDef TM_MarbleGolemK;
+        public static PawnKindDef TM_GraniteGolemK;
+        public static PawnTableDef TM_Golems;
         //public static TMDefs.TM_GolemAbility TM_Golem_GatlingCannon;
-
     }
 }

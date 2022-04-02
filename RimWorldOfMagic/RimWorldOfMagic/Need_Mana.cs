@@ -521,7 +521,10 @@ namespace TorannMagic
 
                         this.lastGainPct = amount;
 
-                        comp.Mana.CurLevel = Mathf.Max(comp.Mana.CurLevel + amount, 0f);
+                        if (comp.Mana.CurLevel < MaxLevel)
+                        {
+                            comp.Mana.CurLevel = Mathf.Max(comp.Mana.CurLevel + amount, 0f);
+                        }
                         //comp.Mana.curLevelInt = Mathf.Clamp(comp.Mana.curLevelInt += amount, 0f, this.MaxLevel);
 
                         lastNeed = this.CurLevel;
@@ -572,12 +575,34 @@ namespace TorannMagic
             {
                 //0.0 to 0.2 max
                 float sev = ((amount - .25f) * 10);
+                if(pawn.story != null && pawn.story.traits != null)
+                {
+                    if (pawn.story.traits.HasTrait(TorannMagicDefOf.TM_EnlightenedTD))
+                    {
+                        sev *= .5f;
+                    }
+                    if(pawn.story.traits.HasTrait(TorannMagicDefOf.TM_CursedTD))
+                    {
+                        sev = (sev * -1f);
+                    }
+                }
                 HealthUtility.AdjustSeverity(pawn, TorannMagicDefOf.TM_ArcaneWeakness, sev);
             }
             else if ((amount) >= .45f && (amount) < .79f)
             {
                 //0.0 to 0.34 max
                 float sev = 2f + ((amount - .45f) * 30);
+                if (pawn.story != null && pawn.story.traits != null)
+                {
+                    if (pawn.story.traits.HasTrait(TorannMagicDefOf.TM_EnlightenedTD))
+                    {
+                        sev *= .5f;
+                    }
+                    if (pawn.story.traits.HasTrait(TorannMagicDefOf.TM_CursedTD))
+                    {
+                        sev = (sev * -1f);
+                    }
+                }
                 HealthUtility.AdjustSeverity(pawn, TorannMagicDefOf.TM_ArcaneWeakness, sev);
             }
             else if ((amount) >= .79f && (amount) < 5)
@@ -587,6 +612,17 @@ namespace TorannMagic
                 if (lastCast != Find.TickManager.TicksGame)
                 {
                     this.lastCast = Find.TickManager.TicksGame;
+                    if (pawn.story != null && pawn.story.traits != null)
+                    {
+                        if (pawn.story.traits.HasTrait(TorannMagicDefOf.TM_EnlightenedTD))
+                        {
+                            sev *= .5f;
+                        }
+                        if (pawn.story.traits.HasTrait(TorannMagicDefOf.TM_CursedTD))
+                        {
+                            sev = (sev * -1f);
+                        }
+                    }
                     HealthUtility.AdjustSeverity(pawn, TorannMagicDefOf.TM_ArcaneWeakness, sev);                    
                 }
             }

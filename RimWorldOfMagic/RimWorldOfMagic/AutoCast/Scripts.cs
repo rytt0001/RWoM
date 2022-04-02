@@ -322,9 +322,9 @@ namespace TorannMagic.AutoCast
             {
                 Pawn caster = casterComp.Pawn;
                 LocalTargetInfo jobTarget = target;
-                float distanceToTarget = (jobTarget.Cell - caster.Position).LengthHorizontal;
-                if (distanceToTarget >= minRange && distanceToTarget < (abilitydef.MainVerb.range * .9f) && jobTarget != null && jobTarget.Thing != null)
-                {
+                float distanceToTarget = (jobTarget.Cell - caster.Position).LengthHorizontal;                
+                if (distanceToTarget >= minRange && jobTarget != null && jobTarget.Thing != null) //&& distanceToTarget < (abilitydef.MainVerb.range * .9f)
+                {                    
                     Job job = ability.GetJob(AbilityContext.AI, jobTarget);
                     job.endIfCantShootTargetFromCurPos = true;
                     DoJob.Execute(job, caster);
@@ -344,7 +344,7 @@ namespace TorannMagic.AutoCast
                 Pawn caster = casterComp.Pawn;
                 LocalTargetInfo jobTarget = target;
                 float distanceToTarget = (jobTarget.Cell - caster.Position).LengthHorizontal;
-                if (distanceToTarget >= minRange && distanceToTarget < (abilitydef.MainVerb.range * .9f) && jobTarget != null && jobTarget.Thing != null && TM_Calc.HasLoSFromTo(caster.Position, jobTarget, caster, 0, abilitydef.MainVerb.range))
+                if (distanceToTarget >= minRange && jobTarget != null && jobTarget.Thing != null && TM_Calc.HasLoSFromTo(caster.Position, jobTarget, caster, 0, abilitydef.MainVerb.range)) // distanceToTarget < (abilitydef.MainVerb.range * .9f) &&
                 {
                     Job job = ability.GetJob(AbilityContext.AI, jobTarget);
                     job.endIfCantShootTargetFromCurPos = true;
@@ -364,9 +364,9 @@ namespace TorannMagic.AutoCast
             {
                 Pawn caster = casterComp.Pawn;
                 LocalTargetInfo jobTarget = target;
-                float distanceToTarget = (jobTarget.Cell - caster.Position).LengthHorizontal;
-                if (distanceToTarget >= minRange && distanceToTarget < (abilitydef.MainVerb.range * .9f) && jobTarget != null && jobTarget.Thing != null)
-                {
+                float distanceToTarget = (jobTarget.Cell - caster.Position).LengthHorizontal;               
+                if (distanceToTarget >= minRange && jobTarget != null && jobTarget.Thing != null) //&& distanceToTarget < (abilitydef.MainVerb.range * .9f)
+                {                    
                     Job job = ability.GetJob(AbilityContext.AI, jobTarget);
                     job.endIfCantShootTargetFromCurPos = true;
                     DoJob.Execute(job, caster);
@@ -386,7 +386,7 @@ namespace TorannMagic.AutoCast
                 Pawn caster = casterComp.Pawn;
                 LocalTargetInfo jobTarget = target;
                 float distanceToTarget = (jobTarget.Cell - caster.Position).LengthHorizontal;
-                if (distanceToTarget >= minRange && distanceToTarget < (abilitydef.MainVerb.range * .9f) && jobTarget != null && jobTarget.Cell.IsValid && jobTarget.Cell.InBounds(casterComp.Pawn.Map) && TM_Calc.HasLoSFromTo(caster.Position, jobTarget, caster, 0, abilitydef.MainVerb.range))
+                if (distanceToTarget >= minRange && jobTarget != null && jobTarget.Cell.IsValid && jobTarget.Cell.InBounds(casterComp.Pawn.Map) && TM_Calc.HasLoSFromTo(caster.Position, jobTarget, caster, 0, abilitydef.MainVerb.range)) //&& distanceToTarget < (abilitydef.MainVerb.range * .9f)
                 {
                     Job job = ability.GetJob(AbilityContext.AI, jobTarget);
                     job.endIfCantShootTargetFromCurPos = true;
@@ -407,7 +407,7 @@ namespace TorannMagic.AutoCast
                 Pawn caster = casterComp.Pawn;
                 LocalTargetInfo jobTarget = target;
                 float distanceToTarget = (jobTarget.Cell - caster.Position).LengthHorizontal;
-                if (distanceToTarget >= minRange && distanceToTarget < (abilitydef.MainVerb.range * .9f) && jobTarget != null && jobTarget.Cell.IsValid && jobTarget.Cell.InBounds(casterComp.Pawn.Map) && TM_Calc.HasLoSFromTo(caster.Position, jobTarget, caster, 0, abilitydef.MainVerb.range))
+                if (distanceToTarget >= minRange && jobTarget != null && jobTarget.Cell.IsValid && jobTarget.Cell.InBounds(casterComp.Pawn.Map) && TM_Calc.HasLoSFromTo(caster.Position, jobTarget, caster, 0, abilitydef.MainVerb.range)) //&& distanceToTarget < (abilitydef.MainVerb.range * .9f)
                 {
                     Job job = ability.GetJob(AbilityContext.AI, jobTarget);
                     job.endIfCantShootTargetFromCurPos = true;
@@ -1012,7 +1012,7 @@ namespace TorannMagic.AutoCast
                         }
                         if (!targetPawn.health.hediffSet.HasHediff(hediffDef, false) && tatteredApparel)
                         {
-                            Job job = ability.GetJob(AbilityContext.AI, jobTarget);
+                            Job job = ability.GetJob(AbilityContext.AI, jobTarget);   
                             DoJob.Execute(job, caster);
                             success = true;
                         }
@@ -1026,7 +1026,7 @@ namespace TorannMagic.AutoCast
     {
         public static void Execute(Job job, Pawn caster)
         {
-            if (ModOptions.Settings.Instance.autocastQueueing && !caster.Drafted && caster.CurJobDef != JobDefOf.Hunt)
+            if (caster.IsColonist && ModOptions.Settings.Instance.autocastQueueing && !caster.Drafted && caster.CurJobDef != JobDefOf.Hunt)
             {
                 if (caster.jobs.jobQueue.Count < 1)
                 {
@@ -1035,7 +1035,7 @@ namespace TorannMagic.AutoCast
             }
             else
             {
-                caster.jobs.TryTakeOrderedJob(job);
+                caster.jobs.TryTakeOrderedJob(job);                
             }
         }
     }
