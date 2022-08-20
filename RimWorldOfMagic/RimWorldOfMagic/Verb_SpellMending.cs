@@ -14,7 +14,7 @@ namespace TorannMagic
         //Used specifically for non-unique verbs that ignore LOS (can be used with shield belt)
         public override bool CanHitTargetFrom(IntVec3 root, LocalTargetInfo targ)
         {
-            if (targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
+            if (targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
             {
                 if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
                 {
@@ -44,7 +44,7 @@ namespace TorannMagic
 
             if (hitPawn != null & !hitPawn.Dead && !hitPawn.RaceProps.Animal)
             {
-                CompAbilityUserMagic compCaster = caster.TryGetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic compCaster = caster.GetCompAbilityUserMagic();
                 if (compCaster != null && compCaster.MagicData.MagicPowerSkill_Cantrips.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_Cantrips_ver").level >= 8)
                 {
                     HealthUtility.AdjustSeverity(hitPawn, HediffDef.Named("SpellMendingHD"), 1.95f);

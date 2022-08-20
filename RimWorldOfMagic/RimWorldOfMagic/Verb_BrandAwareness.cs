@@ -5,7 +5,8 @@ using RimWorld;
 using AbilityUser;
 using Verse;
 using Verse.AI;
-
+using TorannMagic.TMDefs;
+using UnityEngine;
 
 namespace TorannMagic
 {
@@ -18,7 +19,7 @@ namespace TorannMagic
         bool validTarg;
         public override bool CanHitTargetFrom(IntVec3 root, LocalTargetInfo targ)
         {
-            if (targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map))
+            if (targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map))
             {
                 if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
                 {
@@ -40,36 +41,21 @@ namespace TorannMagic
         protected override bool TryCastShot()
         {
             bool flag = false;
-            Pawn caster = this.CasterPawn;
-            Pawn hitPawn = this.currentTarget.Thing as Pawn;
-            if(hitPawn != null && hitPawn.RaceProps != null)
+            Pawn caster = this.CasterPawn;            
+            
+            if(caster != null && this.CurrentTarget.HasThing && this.CurrentTarget.Thing is Pawn)
             {
-                CompAbilityUserMagic casterComp = caster.TryGetComp<CompAbilityUserMagic>();
-                CompAbilityUserMagic targetComp = hitPawn.TryGetComp<CompAbilityUserMagic>();
+                Pawn hitPawn = this.currentTarget.Thing as Pawn;
+                CompAbilityUserMagic casterComp = caster.GetCompAbilityUserMagic();
 
-                if (casterComp != null && hitPawn.health != null && hitPawn.health.hediffSet != null)
+                if (casterComp != null && hitPawn.health != null && hitPawn.health.hediffSet != null && hitPawn != caster)
                 {
-                    RemoveOldBrand(hitPawn);
+                    TM_Action.UpdateBrand(hitPawn, caster, casterComp, TorannMagicDefOf.TM_AwarenessBrandHD);
 
-                    HealthUtility.AdjustSeverity(hitPawn, TorannMagicDefOf.TM_AwarenessBrandHD, .05f);
-                    if (casterComp.BrandedPawns != null)
-                    {
-                        casterComp.BrandedPawns.Add(hitPawn);
-                    }
-                    Hediff newBrand = hitPawn.health.hediffSet.GetFirstHediffOfDef(TorannMagicDefOf.TM_AwarenessBrandHD);
-                    if (newBrand != null && newBrand.TryGetComp<HediffComp_BrandingBase>() != null)
-                    {
-                        newBrand.TryGetComp<HediffComp_BrandingBase>().BranderPawn = caster;
-                    }
+                    UpdateHediffComp(hitPawn);
 
-                    Effecter effect = EffecterDefOf.Skip_EntryNoDelay.Spawn();
-                    effect.Trigger(new TargetInfo(caster), new TargetInfo(hitPawn));
-                    effect.Cleanup();
-                
-                    Effecter effectExit = EffecterDefOf.Skip_ExitNoDelay.Spawn();
-                    effectExit.Trigger(new TargetInfo(hitPawn), new TargetInfo(hitPawn));
-                    effectExit.Cleanup();
-            }
+                    DoBrandingEffect(hitPawn);
+                }
                 else
                 {
                     Messages.Message("TM_InvalidTarget".Translate(CasterPawn.LabelShort, this.Ability.Def.label), MessageTypeDefOf.RejectInput);
@@ -82,24 +68,58 @@ namespace TorannMagic
 
             this.PostCastShot(flag, out flag);
             return flag;
-        }      
-        
-        private void RemoveOldBrand(Pawn hitPawn)
+        }
+
+        private void UpdateHediffComp(Pawn hitPawn)
         {
-            Hediff oldBrand = hitPawn.health.hediffSet.GetFirstHediffOfDef(TorannMagicDefOf.TM_AwarenessBrandHD);
-            if (oldBrand != null)
+            Hediff hd = hitPawn.health.hediffSet.GetFirstHediffOfDef(TorannMagicDefOf.TM_AwarenessBrandHD);
+            if (hd != null)
             {
-                HediffComp_BrandingBase hd_br = oldBrand.TryGetComp<HediffComp_BrandingBase>();
-                if (hd_br != null && hd_br.BranderPawn != null && !hd_br.BranderPawn.DestroyedOrNull() && !hd_br.BranderPawn.Dead)
+                HediffComp_BrandingBase hdc = hd.TryGetComp<HediffComp_BrandingBase>();
+                if (hdc != null)
                 {
-                    CompAbilityUserMagic branderComp = hd_br.BranderPawn.TryGetComp<CompAbilityUserMagic>();
-                    if (branderComp != null && branderComp.BrandedPawns != null && branderComp.BrandedPawns.Contains(hitPawn))
-                    {
-                        branderComp.BrandedPawns.Remove(hitPawn);
-                    }
+                    hdc.BranderPawn = this.CasterPawn;
                 }
-                hitPawn.health.RemoveHediff(oldBrand);
             }
         }
+
+        private void DoBrandingEffect(Pawn hitPawn)
+        {
+            if(hitPawn != null && hitPawn.Map != null)
+            {
+                TargetInfo ti = new TargetInfo(hitPawn.Position, hitPawn.Map, false);
+                TM_MoteMaker.MakeOverlay(ti, TorannMagicDefOf.TM_Mote_PsycastAreaEffect, hitPawn.Map, Vector3.zero, 1f, 0f, .1f, .4f, 1.2f, -3f);
+            }
+            //Effecter effect = EffecterDefOf.Skip_EntryNoDelay.Spawn();
+            //effect.Trigger(new TargetInfo(this.CasterPawn), new TargetInfo(hitPawn));
+            //effect.Cleanup();
+
+            //Effecter effectExit = EffecterDefOf.Skip_ExitNoDelay.Spawn();
+            //effectExit.Trigger(new TargetInfo(hitPawn), new TargetInfo(hitPawn));
+            //effectExit.Cleanup();
+        }
+
+        //private void ChangeExistingBrand(Pawn hitPawn, CompAbilityUserMagic casterComp)
+        //{
+        //    Hediff oldBrand = hitPawn.health.hediffSet.GetFirstHediffOfDef(TorannMagicDefOf.TM_AwarenessBrandHD);
+        //    if (oldBrand != null)
+        //    {
+        //        HediffComp_BrandingBase hd_br = oldBrand.TryGetComp<HediffComp_BrandingBase>();
+        //        if (hd_br != null)
+        //        {
+        //            if (!hd_br.BranderPawn.DestroyedOrNull())
+        //            {
+        //                CompAbilityUserMagic branderComp = hd_br.BranderPawn.GetCompAbilityUserMagic();
+        //                if (branderComp != null && branderComp.BrandedPawns != null && branderComp.BrandedPawns.Contains(hitPawn))
+        //                {
+        //                    branderComp.BrandedPawns.Remove(hitPawn);
+        //                }
+        //            }
+        //            hd_br.BranderPawn = this.CasterPawn; 
+        //            casterComp.BrandedPawns.Add()
+        //        }
+        //        //hitPawn.health.RemoveHediff(oldBrand);
+        //    }
+        //}
     }
 }

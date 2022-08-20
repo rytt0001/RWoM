@@ -134,7 +134,7 @@ namespace TorannMagic
             bool spawned = flyingThing.Spawned;            
             pawn = launcher as Pawn;
             drafted = pawn.Drafted;
-            comp = pawn.GetComp<CompAbilityUserMight>();
+            comp = pawn.GetCompAbilityUserMight();
             verVal = TM_Calc.GetSkillVersatilityLevel(pawn, TorannMagicDefOf.TM_DragonStrike, true);
             //verVal = TM_Calc.GetMightSkillLevel(pawn, comp.MightData.MightPowerSkill_DragonStrike, "TM_DragonStrike", "_ver", true);
             //this.verVal = comp.MightData.MightPowerSkill_DragonStrike.FirstOrDefault((MightPowerSkill x) => x.label == "TM_DragonStrike_ver").level;
@@ -169,7 +169,7 @@ namespace TorannMagic
             //base.Tick();
             Vector3 exactPosition = this.ExactPosition;
             this.ticksToImpact--;
-            bool flag = !this.ExactPosition.InBounds(base.Map);
+            bool flag = !this.ExactPosition.InBoundsWithNullCheck(base.Map);
             if (flag)
             {
                 this.ticksToImpact++;
@@ -194,7 +194,7 @@ namespace TorannMagic
                 bool flag2 = this.ticksToImpact <= 0;
                 if (flag2)
                 {
-                    bool flag3 = this.DestinationCell.InBounds(base.Map);
+                    bool flag3 = this.DestinationCell.InBoundsWithNullCheck(base.Map);
                     if (flag3)
                     {
                         base.Position = this.DestinationCell;
@@ -292,7 +292,7 @@ namespace TorannMagic
                         {
                             Vector3 launchVector = TM_Calc.GetVector(this.origin, hitThing.Position.ToVector3());
                             IntVec3 projectedPosition = hitThing.Position + ((10f - distanceToTarget) * (1 + (.15f * verVal)) * launchVector).ToIntVec3();
-                            if (projectedPosition.IsValid && projectedPosition.InBounds(hitThing.Map))
+                            if (projectedPosition.IsValid && projectedPosition.InBoundsWithNullCheck(hitThing.Map))
                             {
                                 LaunchFlyingObect(projectedPosition, hitPawn, Mathf.RoundToInt(10f - distanceToTarget));
                             }

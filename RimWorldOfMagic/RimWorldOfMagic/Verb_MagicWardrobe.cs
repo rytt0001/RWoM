@@ -20,7 +20,7 @@ namespace TorannMagic
             
             if (pawn != null && !pawn.Downed)
             {
-                CompAbilityUserMagic comp = pawn.TryGetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic comp = pawn.GetCompAbilityUserMagic();
                 if(comp != null && comp.MagicWardrobe != null && pawn.apparel != null)
                 {                    
                     List<ThingWithComps> tmpHolder = new List<ThingWithComps>();
@@ -42,6 +42,7 @@ namespace TorannMagic
                     {                       
                         pawn.apparel.Wear(tmpApparel[i] as Apparel);
                         pawn.apparel.Notify_ApparelChanged();
+                        pawn.apparel.Lock(tmpApparel[i] as Apparel);
                     }
                     for (int i = 0; i < tmpHolder.Count; i++)
                     {                       

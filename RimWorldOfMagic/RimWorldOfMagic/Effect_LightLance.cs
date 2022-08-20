@@ -12,7 +12,7 @@ namespace TorannMagic
 
         public override bool CanHitTargetFrom(IntVec3 root, LocalTargetInfo targ)
         {
-            if (targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
+            if (targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
             {
                 if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
                 {
@@ -51,7 +51,7 @@ namespace TorannMagic
             int shotCount = 3;
             if(!base.CasterPawn.DestroyedOrNull())
             {
-                CompAbilityUserMagic comp = base.CasterPawn.GetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic comp = base.CasterPawn.GetCompAbilityUserMagic();
                 if (comp != null)
                 {
                     //shotCount -= TM_Calc.GetMagicSkillLevel(base.CasterPawn, comp.MagicData.MagicPowerSkill_LightLance, "TM_LightLance", "_pwr", true);

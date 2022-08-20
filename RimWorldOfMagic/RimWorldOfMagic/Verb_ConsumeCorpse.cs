@@ -15,7 +15,7 @@ namespace TorannMagic
         //Used specifically for non-unique verbs that ignore LOS (can be used with shield belt) 
         public override bool CanHitTargetFrom(IntVec3 root, LocalTargetInfo targ)
         {
-            if (targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
+            if (targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
             {
                 if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
                 {
@@ -38,17 +38,14 @@ namespace TorannMagic
         {
 
             Pawn caster = this.CasterPawn;
-            CompAbilityUserMagic comp = caster.GetComp<CompAbilityUserMagic>();
-            MagicPowerSkill ver = caster.GetComp<CompAbilityUserMagic>().MagicData.MagicPowerSkill_ConsumeCorpse.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_ConsumeCorpse_ver");
-            MagicPowerSkill manaRegen = caster.GetComp<CompAbilityUserMagic>().MagicData.MagicPowerSkill_global_regen.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_global_regen_pwr");
+            CompAbilityUserMagic comp = caster.GetCompAbilityUserMagic();
+            MagicPowerSkill ver = caster.GetCompAbilityUserMagic().MagicData.MagicPowerSkill_ConsumeCorpse.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_ConsumeCorpse_ver");
+            MagicPowerSkill manaRegen = caster.GetCompAbilityUserMagic().MagicData.MagicPowerSkill_global_regen.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_global_regen_pwr");
 
             Thing undeadThing = this.currentTarget.Thing;
-            if (undeadThing is Pawn)
+            if (undeadThing is Pawn undead)
             {
-                Pawn undead = (Pawn)undeadThing;
-
-                bool flag = undead != null && !undead.Dead;
-                if (flag)
+                if (!undead.Dead)
                 {
                     if (TM_Calc.IsUndead(undead))
                     {

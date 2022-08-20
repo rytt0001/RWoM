@@ -43,7 +43,7 @@ namespace TorannMagic
                 gProps.glowRadius = 7f;
                 glower.parent = this.Pawn;
                 glower.Initialize(gProps);
-                comp = base.Pawn.GetComp<CompAbilityUserMagic>();
+                comp = base.Pawn.GetCompAbilityUserMagic();
                 this.nextLightningTick = Find.TickManager.TicksGame + Rand.Range(400, 800);
             }
         }
@@ -81,18 +81,21 @@ namespace TorannMagic
 
             if (this.glower != null && glower.parent != null && comp != null)
             {
-                if (this.Pawn != null && this.Pawn.Map != null)
+                if (oldPos != this.Pawn.Position)
                 {
-                    if (oldPos != default(IntVec3))
+                    if (this.Pawn != null && this.Pawn.Map != null)
                     {
-                        this.Pawn.Map.mapDrawer.MapMeshDirty(oldPos, MapMeshFlag.Things);
-                        this.Pawn.Map.glowGrid.DeRegisterGlower(glower);
-                    }
-                    if ((this.Pawn.Map.skyManager.CurSkyGlow < 0.7f || this.Pawn.Position.Roofed(Pawn.Map)) && !comp.mageLightSet)
-                    {
-                        this.Pawn.Map.mapDrawer.MapMeshDirty(this.Pawn.Position, MapMeshFlag.Things);
-                        oldPos = this.Pawn.Position;
-                        this.Pawn.Map.glowGrid.RegisterGlower(glower);                        
+                        if (oldPos != default(IntVec3))
+                        {
+                            this.Pawn.Map.mapDrawer.MapMeshDirty(oldPos, MapMeshFlag.Things);
+                            this.Pawn.Map.glowGrid.DeRegisterGlower(glower);
+                        }
+                        if ((this.Pawn.Map.skyManager.CurSkyGlow < 0.7f || this.Pawn.Position.Roofed(Pawn.Map)) && !comp.mageLightSet)
+                        {
+                            this.Pawn.Map.mapDrawer.MapMeshDirty(this.Pawn.Position, MapMeshFlag.Things);
+                            oldPos = this.Pawn.Position;
+                            this.Pawn.Map.glowGrid.RegisterGlower(glower);
+                        }
                     }
                 }
             }

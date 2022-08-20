@@ -1804,7 +1804,7 @@ Wanderers prefer the open road and gain a mood boost for being in a caravan. Car
 				<MeleeDodgeChance>10</MeleeDodgeChance>
 				<WorkSpeedGlobal>0.10</WorkSpeedGlobal>
 				<AimingDelayFactor>-0.25</AimingDelayFactor>
-				<ShootingAccuracyPawn>-35</ShootingAccuracyPawn>	
+				<ShootingAccuracyPawn>-15</ShootingAccuracyPawn>	
 				<SocialImpact>0.10</SocialImpact>
 				<ToxicSensitivity>+.30</ToxicSensitivity>
 				<CarryingCapacity>-30</CarryingCapacity>
@@ -1983,6 +1983,88 @@ Wanderers prefer the open road and gain a mood boost for being in a caravan. Car
 		  <li>TM_Shaman</li>
 		  <li>TM_Empath</li>
 		  <li>TM_Apothecary</li>
+		</conflictingTraits>	
+	</TraitDef>
+	
+	<TraitDef>  
+		<defName>TM_Possessed</defName>
+		<ignoreConfigErrors>true</ignoreConfigErrors>
+		<commonality>0</commonality>
+		<degreeDatas>	
+		  <li>
+			<label>Possessed</label>
+			<description>The body of [PAWN_nameDef] is inhabited by the spirit of another pawn. Possession in a living pawn creates an internal conflict as the functions of the body are shared between two souls. This conflict can be reduced if personalities align, but will become further aggravated if they contrast. Possession of a deceased pawn will not experience mental conflicts, but will slowly deplete the energy of the possessing spirit. Spirit can be recharged through meditation or absorption.</description>
+			<degree>0</degree>
+			<statOffsets>				
+			</statOffsets>			
+		  </li>
+		</degreeDatas>
+		<modExtensions>
+			<li Class="TorannMagic.TMDefs.DefModExtension_TraitEnchantments">
+				<mpRegenRate>0.2</mpRegenRate>
+				<arcaneRes>.5</arcaneRes>
+				<arcaneDmg>.1</arcaneDmg>
+				<combatDmg>.25</combatDmg>
+			</li>
+		</modExtensions>
+		<conflictingTraits>
+		  <li>TM_Possessor</li>
+		</conflictingTraits>	
+	</TraitDef>
+	
+	<TraitDef>  
+		<defName>TM_Possessor</defName>
+		<ignoreConfigErrors>true</ignoreConfigErrors>
+		<commonality>0</commonality>
+		<degreeDatas>	
+		  <li>
+			<label>Spirit</label>
+			<description>The body of [PAWN_nameDef] is inhabited by the spirit of another pawn. Possession in a living pawn creates an internal conflict as the functions of the body are shared between two souls. This conflict can be reduced if personalities align, but will become further aggravated if they contrast. Possession of a deceased pawn will not experience mental conflicts, but will slowly deplete the energy of the possessing spirit. Spirit can be recharged through meditation or absorption.</description>
+			<degree>0</degree>
+			<statOffsets>				
+			</statOffsets>			
+		  </li>
+		</degreeDatas>		
+		<conflictingTraits>
+		  <li>InnerFire</li>
+		  <li>HeartOfFrost</li>
+		  <li>StormBorn</li>
+		  <li>Arcanist</li>
+		  <li>TM_Gifted</li>
+		  <li>PhysicalProdigy</li>
+		  <li>Paladin</li>
+		  <li>Gladiator</li>
+		  <li>TM_Sniper</li>
+		  <li>Summoner</li>
+		  <li>Druid</li>
+		  <li>Bladedancer</li>
+		  <li>Necromancer</li>
+		  <li>Priest</li>
+		  <li>Ranger</li>
+		  <li>Lich</li>
+		  <li>TM_Bard</li>
+		  <li>Faceless</li>
+		  <li>Succubus</li>
+		  <li>Warlock</li>
+		  <li>TM_Psionic</li>
+		  <li>Geomancer</li>
+		  <li>Technomancer</li>
+		  <li>BloodMage</li>
+		  <li>DeathKnight</li>
+		  <li>Enchanter</li>
+		  <li>TM_Monk</li>
+		  <li>TM_Wanderer</li>
+		  <li>TM_Wayfarer</li>
+		  <li>Chronomancer</li>
+		  <li>TM_SuperSoldier</li>
+		  <li>TM_Commander</li>	
+		  <li>ChaosMage</li>
+		  <li>TM_TheShadow</li>
+		  <li>TM_Brightmage</li>
+		  <li>TM_Shaman</li>
+		  <li>TM_Empath</li>
+		  <li>TM_Apothecary</li>
+		  <li>TM_Possessor</li>
 		</conflictingTraits>	
 	</TraitDef>
 	
@@ -2274,6 +2356,7 @@ Wayfarers prefer the open road and will gain a mood boost for being in a caravan
 					<ConstructionSpeed>-.10</ConstructionSpeed>
 					<TameAnimalChance>.10</TameAnimalChance>
 					<TrainAnimalChance>.10</TrainAnimalChance>
+					<ShootingAccuracyPawn>2</ShootingAccuracyPawn>
                 </statOffsets>
 		  </li>
 		  <li>
@@ -2293,6 +2376,7 @@ Wayfarers prefer the open road and will gain a mood boost for being in a caravan
 					<ConstructionSpeed>-.15</ConstructionSpeed>
 					<TameAnimalChance>.12</TameAnimalChance>
 					<TrainAnimalChance>.12</TrainAnimalChance>
+					<ShootingAccuracyPawn>3</ShootingAccuracyPawn>
                 </statOffsets>
 		  </li>
 		  <li>
@@ -2312,6 +2396,7 @@ Wayfarers prefer the open road and will gain a mood boost for being in a caravan
 					<ConstructionSpeed>-.18</ConstructionSpeed>
 					<TameAnimalChance>.14</TameAnimalChance>
 					<TrainAnimalChance>.14</TrainAnimalChance>
+					<ShootingAccuracyPawn>4</ShootingAccuracyPawn>
                 </statOffsets>
 		  </li>
 		  <li>
@@ -2331,6 +2416,7 @@ Wayfarers prefer the open road and will gain a mood boost for being in a caravan
 					<ConstructionSpeed>-.20</ConstructionSpeed>
 					<TameAnimalChance>.15</TameAnimalChance>
 					<TrainAnimalChance>.15</TrainAnimalChance>
+					<ShootingAccuracyPawn>5</ShootingAccuracyPawn>
 					
                 </statOffsets>
 		  </li>
@@ -2390,7 +2476,7 @@ Wayfarers prefer the open road and will gain a mood boost for being in a caravan
 				<statOffsets>
 					<MoveSpeed>.10</MoveSpeed>
                     <AimingDelayFactor>-0.10</AimingDelayFactor>
-					<ShootingAccuracyPawn>2</ShootingAccuracyPawn>
+					<ShootingAccuracyPawn>3</ShootingAccuracyPawn>
 					<ResearchSpeed>-0.10</ResearchSpeed>
 					<WorkSpeedGlobal>-.10</WorkSpeedGlobal>
 					<TameAnimalChance>-.10</TameAnimalChance>
@@ -2405,7 +2491,7 @@ Wayfarers prefer the open road and will gain a mood boost for being in a caravan
 				<statOffsets>
 					<MoveSpeed>.15</MoveSpeed>
                     <AimingDelayFactor>-0.15</AimingDelayFactor>
-					<ShootingAccuracyPawn>4</ShootingAccuracyPawn>
+					<ShootingAccuracyPawn>6</ShootingAccuracyPawn>
 					<ResearchSpeed>-0.13</ResearchSpeed>
 					<WorkSpeedGlobal>-.13</WorkSpeedGlobal>
 					<TameAnimalChance>-.13</TameAnimalChance>
@@ -2420,7 +2506,7 @@ Wayfarers prefer the open road and will gain a mood boost for being in a caravan
 				<statOffsets>
 					<MoveSpeed>.20</MoveSpeed>
                     <AimingDelayFactor>-0.22</AimingDelayFactor>
-					<ShootingAccuracyPawn>6</ShootingAccuracyPawn>
+					<ShootingAccuracyPawn>8</ShootingAccuracyPawn>
 					<ResearchSpeed>-0.15</ResearchSpeed>
 					<WorkSpeedGlobal>-.15</WorkSpeedGlobal>
 					<TameAnimalChance>-.15</TameAnimalChance>
@@ -2435,7 +2521,7 @@ Wayfarers prefer the open road and will gain a mood boost for being in a caravan
 				<statOffsets>
 					<MoveSpeed>.25</MoveSpeed>
                     <AimingDelayFactor>-0.30</AimingDelayFactor>
-					<ShootingAccuracyPawn>8</ShootingAccuracyPawn>
+					<ShootingAccuracyPawn>10</ShootingAccuracyPawn>
 					<ResearchSpeed>-0.16</ResearchSpeed>
 					<WorkSpeedGlobal>-.16</WorkSpeedGlobal>
 					<TameAnimalChance>-.16</TameAnimalChance>

@@ -101,7 +101,7 @@ namespace TorannMagic
                 FleckMaker.ThrowDustPuff(this.origin, this.Map, Rand.Range(1.2f, 1.8f));
                 GetVector();
                 this.angle = (Quaternion.AngleAxis(90, Vector3.up) * this.direction).ToAngleFlat();
-                CompAbilityUserMagic comp = pawn.TryGetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic comp = pawn.GetCompAbilityUserMagic();
                 if(comp != null && comp.IsMagicUser)
                 {
                     //verVal = TM_Calc.GetMagicSkillLevel(pawn, comp.MagicData.MagicPowerSkill_SpiritWolves, "TM_SpiritWolves", "_ver", true);
@@ -165,7 +165,7 @@ namespace TorannMagic
             }
             this.ticksToImpact--;
             base.Position = this.ExactPosition.ToIntVec3();
-            bool flag = !this.ExactPosition.InBounds(base.Map);
+            bool flag = !this.ExactPosition.InBoundsWithNullCheck(base.Map);
             if (flag)
             {
                 this.ticksToImpact++;
@@ -176,7 +176,7 @@ namespace TorannMagic
                 bool flag2 = this.ticksToImpact <= 0;
                 if (flag2)
                 {
-                    bool flag3 = this.DestinationCell.InBounds(base.Map);
+                    bool flag3 = this.DestinationCell.InBoundsWithNullCheck(base.Map);
                     if (flag3)
                     {
                         base.Position = this.DestinationCell;
@@ -240,7 +240,7 @@ namespace TorannMagic
                 if (lastRadial != null && lastRadial.Count() > 0)
                 {
                     curCell = lastRadial.RandomElement();
-                    if (curCell.InBounds(base.Map) && curCell.IsValid)
+                    if (curCell.InBoundsWithNullCheck(base.Map) && curCell.IsValid)
                     {
                         ThingDef moteSmoke = TorannMagicDefOf.Mote_Base_Smoke;
                         if (Rand.Chance(.5f))
@@ -266,11 +266,11 @@ namespace TorannMagic
             bool addAbilities = false;
             if (pawn != null)
             {
-                CompAbilityUserMagic comp = pawn.TryGetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic comp = pawn.GetCompAbilityUserMagic();
                 for (int i = 0; i < effectRadial.Count(); i++)
                 {
                     curCell = effectRadial.ToArray<IntVec3>()[i];
-                    if (curCell.InBounds(base.Map) && curCell.IsValid)
+                    if (curCell.InBoundsWithNullCheck(base.Map) && curCell.IsValid)
                     {
                         hitList = curCell.GetThingList(base.Map);
                         for (int j = 0; j < hitList.Count; j++)

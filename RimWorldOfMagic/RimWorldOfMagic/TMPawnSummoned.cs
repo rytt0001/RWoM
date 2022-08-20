@@ -41,7 +41,7 @@ namespace TorannMagic
         {
             get
             {
-                return spawner.GetComp<CompAbilityUserMagic>();
+                return spawner.GetCompAbilityUserMagic();
             }
         }
 
@@ -141,7 +141,10 @@ namespace TorannMagic
                     if (flag3)
                     {
                         this.PreDestroy();
-                        this.Destroy(DestroyMode.Vanish);
+                        if (!this.Destroyed)
+                        {
+                            this.Destroy(DestroyMode.Vanish);
+                        }
                     }
                     CheckPawnState();
                     bool spawned = base.Spawned;
@@ -170,7 +173,7 @@ namespace TorannMagic
                                 mote.offsetZ = -0.5f;
                             }
                         }
-                        if(Find.TickManager.TicksGame % 120 == 0)
+                        if (Find.TickManager.TicksGame % 120 == 0)
                         {
                             CheckAndTrain();
                         }
@@ -210,7 +213,7 @@ namespace TorannMagic
                     ));
                 }
             }
-            if(this.def == TorannMagicDefOf.TM_SpiritWolfR)
+            if(this.def == TorannMagicDefOf.TM_SpiritWolfR || this.def == TorannMagicDefOf.TM_SpiritBearR || this.def == TorannMagicDefOf.TM_SpiritCrowR || this.def == TorannMagicDefOf.TM_SpiritMongooseR)
             {
                 try
                 {
@@ -220,7 +223,7 @@ namespace TorannMagic
                         FleckMaker.ThrowSmoke(this.DrawPos, base.Map, Rand.Range(1f, 2f));
                         TM_MoteMaker.ThrowGenericMote(TorannMagicDefOf.Mote_Ghost, this.DrawPos, base.Map, 1f, .25f, 0f, .25f, 0, Rand.Range(1f, 2f), 0, 0);
                     }
-                    else
+                    else if(this.holdingOwner != null && this.holdingOwner.Contains(this))
                     {
                         this.holdingOwner.Remove(this);
                     }                

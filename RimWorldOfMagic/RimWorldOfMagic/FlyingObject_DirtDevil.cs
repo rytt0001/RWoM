@@ -130,7 +130,7 @@ namespace TorannMagic
         {
             bool spawned = flyingThing.Spawned;
             pawn = launcher as Pawn;
-            CompAbilityUserMagic comp = pawn.GetComp<CompAbilityUserMagic>();
+            CompAbilityUserMagic comp = pawn.GetCompAbilityUserMagic();
             if (comp != null)
             {
                 if (comp.MagicData.MagicPowerSkill_Cantrips.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_Cantrips_pwr").level >= 3)
@@ -242,7 +242,7 @@ namespace TorannMagic
             this.searchDelay--;
             Vector3 exactPosition = this.ExactPosition;
             this.ticksToImpact--;
-            bool flag = !this.ExactPosition.InBounds(base.Map);
+            bool flag = !this.ExactPosition.InBoundsWithNullCheck(base.Map);
             if (flag)
             {
                 this.ticksToImpact++;
@@ -263,7 +263,7 @@ namespace TorannMagic
                     }
                     else
                     {
-                        bool flag3 = this.DestinationCell.InBounds(base.Map);
+                        bool flag3 = this.DestinationCell.InBoundsWithNullCheck(base.Map);
                         if (flag3)
                         {
                             base.Position = this.DestinationCell;

@@ -17,6 +17,7 @@ namespace TorannMagic
         protected Vector3 trueDestination;
 
         public float speed = 30f;
+        public Vector3 travelVector = default(Vector3);
         protected new int ticksToImpact;
         //protected new Thing launcher;
         protected Thing assignedTarget;
@@ -114,8 +115,14 @@ namespace TorannMagic
             Scribe_References.Look<Pawn>(ref this.pawn, "pawn", false);
         }
 
+        public virtual void PreInitialize()
+        {
+
+        }
+
         private void Initialize()
         {
+            PreInitialize();
             if (pawn != null)
             {
                 FleckMaker.ThrowDustPuff(this.origin, this.Map, Rand.Range(1.2f, 1.8f));
@@ -123,8 +130,7 @@ namespace TorannMagic
             else
             {
                 flyingThing.ThingID += Rand.Range(0, 214).ToString();
-            }
-            
+            }            
         }
 
         public void Launch(Thing launcher, LocalTargetInfo targ, Thing flyingThing, DamageInfo? impactDamage)
@@ -157,7 +163,7 @@ namespace TorannMagic
         }
 
         public void Launch(Thing launcher, Vector3 origin, LocalTargetInfo targ, Thing flyingThing, DamageInfo? newDamageInfo = null)
-        {            
+        {
             bool spawned = flyingThing.Spawned;            
             this.pawn = launcher as Pawn;
             if (spawned)
@@ -195,6 +201,7 @@ namespace TorannMagic
             int variancePoints = 20;
             Vector3 initialVector = GetVector(start, end);
             initialVector.y = 0;
+            travelVector = initialVector;
             float initialAngle = (initialVector).ToAngleFlat(); //Quaternion.AngleAxis(90, Vector3.up) *
             float curveAngle = variance;
             if(doublesidedVariance == 0)
@@ -232,16 +239,21 @@ namespace TorannMagic
             return direction;
         }
 
+        public virtual void PreTick()
+        {
+
+        }
+
         public override void Tick()
         {
-            //base.Tick();
+            PreTick();
             Vector3 exactPosition = this.ExactPosition;
             if (this.ticksToImpact >= 0 && this.moteDef != null && Find.TickManager.TicksGame % this.moteFrequency == 0)
             {
                 DrawEffects(exactPosition);
             }
             this.ticksToImpact--;
-            bool flag = !this.ExactPosition.InBounds(base.Map);
+            bool flag = !this.ExactPosition.InBoundsWithNullCheck(base.Map);
             if (flag)
             {
                 this.ticksToImpact++;
@@ -276,7 +288,7 @@ namespace TorannMagic
                         }
                         else
                         {
-                            bool flag3 = this.DestinationCell.InBounds(base.Map);
+                            bool flag3 = this.DestinationCell.InBoundsWithNullCheck(base.Map);
                             if (flag3)
                             {
                                 base.Position = this.DestinationCell;
@@ -286,7 +298,7 @@ namespace TorannMagic
                     }
                     else
                     {
-                        bool flag3 = this.DestinationCell.InBounds(base.Map);
+                        bool flag3 = this.DestinationCell.InBoundsWithNullCheck(base.Map);
                         if (flag3)
                         {
                             base.Position = this.DestinationCell;
@@ -295,6 +307,12 @@ namespace TorannMagic
                     }
                 }                
             }
+            PostTick();
+        }
+
+        public virtual void PostTick()
+        {
+
         }
 
         public override void Draw()
@@ -332,7 +350,7 @@ namespace TorannMagic
         public virtual void DrawEffects(Vector3 effectVec)
         {
             effectVec.x += Rand.Range(-0.4f, 0.4f);
-            effectVec.z += Rand.Range(-0.4f, 0.4f);
+            effectVec.z += Rand.Range(-0.4f, 0.4f);            
             TM_MoteMaker.ThrowGenericMote(this.moteDef, effectVec, this.Map, Rand.Range(.4f, .6f), Rand.Range(.05f, .1f), .03f, Rand.Range(.2f, .3f), Rand.Range(-200, 200), Rand.Range(.5f, 2f), Rand.Range(0, 360), Rand.Range(0, 360));
         }
 
@@ -376,14 +394,13 @@ namespace TorannMagic
                 hitThing.TakeDamage(this.impactDamage.Value);
             }
             ImpactOverride();
-            if (this.flyingThing is Pawn)
+            if (this.flyingThing is Pawn p)
             {
                 try
                 {
                     SoundDefOf.Ambient_AltitudeWind.sustainFadeoutTime.Equals(30.0f);
 
-                    GenSpawn.Spawn(this.flyingThing, base.Position, base.Map);
-                    Pawn p = this.flyingThing as Pawn;
+                    GenSpawn.Spawn(this.flyingThing, base.Position, base.Map);                   
                     if (this.earlyImpact)
                     {
                         damageEntities(p, this.impactForce, DamageDefOf.Blunt);
@@ -394,8 +411,6 @@ namespace TorannMagic
                 catch
                 {
                     GenSpawn.Spawn(this.flyingThing, base.Position, base.Map);
-                    Pawn p = this.flyingThing as Pawn;
-
                     this.Destroy(DestroyMode.Vanish);
                 }
             }

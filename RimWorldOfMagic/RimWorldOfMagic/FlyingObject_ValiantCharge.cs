@@ -160,18 +160,18 @@ namespace TorannMagic
             bool spawned = flyingThing.Spawned;
             this.pawn = launcher as Pawn;
             pawn.health.AddHediff(invul, null, null);
-            comp = pawn.GetComp<CompAbilityUserMagic>();
+            comp = pawn.GetCompAbilityUserMagic();
             pwrVal = TM_Calc.GetSkillPowerLevel(pawn, TorannMagicDefOf.TM_ValiantCharge);
             verVal = TM_Calc.GetSkillVersatilityLevel(pawn, TorannMagicDefOf.TM_ValiantCharge);
-            //pwr = pawn.GetComp<CompAbilityUserMagic>().MagicData.MagicPowerSkill_ValiantCharge.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_ValiantCharge_pwr");
-            //ver = pawn.GetComp<CompAbilityUserMagic>().MagicData.MagicPowerSkill_ValiantCharge.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_ValiantCharge_ver");
+            //pwr = pawn.GetCompAbilityUserMagic().MagicData.MagicPowerSkill_ValiantCharge.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_ValiantCharge_pwr");
+            //ver = pawn.GetCompAbilityUserMagic().MagicData.MagicPowerSkill_ValiantCharge.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_ValiantCharge_ver");
             //ModOptions.SettingsRef settingsRef = new ModOptions.SettingsRef();
             //pwrVal = pwr.level;
             //verVal = ver.level;
             //if (pawn.story.traits.HasTrait(TorannMagicDefOf.Faceless))
             //{
-            //    MightPowerSkill mpwr = pawn.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_pwr");
-            //    MightPowerSkill mver = pawn.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_ver");
+            //    MightPowerSkill mpwr = pawn.GetCompAbilityUserMight().MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_pwr");
+            //    MightPowerSkill mver = pawn.GetCompAbilityUserMight().MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_ver");
             //    pwrVal = mpwr.level;
             //    verVal = mver.level;
             //}
@@ -205,7 +205,7 @@ namespace TorannMagic
             //base.Tick();
             Vector3 exactPosition = this.ExactPosition;
             this.ticksToImpact--;
-            bool flag = !this.ExactPosition.InBounds(base.Map);
+            bool flag = !this.ExactPosition.InBoundsWithNullCheck(base.Map);
             if (flag)
             {
                 this.ticksToImpact++;
@@ -219,7 +219,7 @@ namespace TorannMagic
                 bool flag2 = this.ticksToImpact <= 0;
                 if (flag2)
                 {
-                    bool flag3 = this.DestinationCell.InBounds(base.Map);
+                    bool flag3 = this.DestinationCell.InBoundsWithNullCheck(base.Map);
                     if (flag3)
                     {
                         base.Position = this.DestinationCell;

@@ -68,9 +68,8 @@ namespace TorannMagic.Golems
             {
                 if(threatTarget != null)
                 {
-                    if (threatTarget is Pawn)
+                    if (threatTarget is Pawn p)
                     {
-                        Pawn p = threatTarget as Pawn;
                         if(p.DestroyedOrNull() || p.Dead || p.Downed || p.Map == null)
                         {
                             threatTarget = null;
@@ -98,9 +97,8 @@ namespace TorannMagic.Golems
                 {
                     return false;
                 }
-                if (targetThing is Pawn)
+                if (targetThing is Pawn p)
                 {
-                    Pawn p = targetThing as Pawn;
                     if (p.Dead || p.Downed)
                     {
                         return false;
@@ -115,16 +113,19 @@ namespace TorannMagic.Golems
                     return false;
                 }
             }
-            if (target.Cell.DistanceToEdge(source.Map) < 8)
+            if (target.Thing != null && target.Thing.Map == Pawn.Map)
             {
-                return false;
+                if (target.Cell.DistanceToEdge(source.Map) < 8)
+                {
+                    return false;
+                }
+                if (checkThreatPath && !target.Cell.InAllowedArea(Pawn))
+                {
+                    return false;
+                }
+                return true;
             }
-            if (checkThreatPath && !target.Cell.InAllowedArea(Pawn))
-            {
-                return false;
-            }
-
-            return true;
+            return false;
         }
 
         //unsaved variables
@@ -321,9 +322,9 @@ namespace TorannMagic.Golems
                 {
                     foreach(Thing t in innerContainer)
                     {
-                        if(t is Building_TMGolemBase)
+                        if(t is Building_TMGolemBase tmGolemBase)
                         {
-                            dormantThing = t as Building_TMGolemBase;
+                            dormantThing = tmGolemBase;
                         }
                     }
                 }
@@ -396,15 +397,18 @@ namespace TorannMagic.Golems
 
         protected virtual void ApplyNeeds()
         {
-            Need_GolemEnergy need_ge = Pawn.needs?.TryGetNeed(TorannMagicDefOf.TM_GolemEnergy) as Need_GolemEnergy;
-            if (need_ge != null)
+            if (Pawn.needs != null)
             {
-                CompGolemEnergyHandler cgeh = InnerWorkstation.Energy;
-                if (cgeh != null)
+                Need_GolemEnergy need_ge = Pawn.needs.TryGetNeed(TorannMagicDefOf.TM_GolemEnergy) as Need_GolemEnergy;
+                if (need_ge != null)
                 {
-                    need_ge.CurLevel = cgeh.StoredEnergy;
-                    need_ge.maxEnergy = cgeh.StoredEnergyMax;
-                    need_ge.energyEfficiency = cgeh.ConversionEfficiency;
+                    CompGolemEnergyHandler cgeh = InnerWorkstation.Energy;
+                    if (cgeh != null)
+                    {
+                        need_ge.CurLevel = cgeh.StoredEnergy;
+                        need_ge.maxEnergy = cgeh.StoredEnergyMax;
+                        need_ge.energyEfficiency = cgeh.ConversionEfficiency;
+                    }
                 }
             }
         }
@@ -562,7 +566,7 @@ namespace TorannMagic.Golems
         {
             if (this.age > 0)
             {
-                if (!this.initialized)
+                if (!this.initialized && InnerWorkstation != null)
                 {
                     Initialize();
                     this.initialized = true;
@@ -603,7 +607,7 @@ namespace TorannMagic.Golems
         {
             if(!pawnMaster.DestroyedOrNull() && !pawnMaster.Dead)
             {
-                CompAbilityUserMagic masterComp = pawnMaster.TryGetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic masterComp = pawnMaster.GetCompAbilityUserMagic();
                 if(TM_Calc.IsMagicUser(pawnMaster) && masterComp != null && masterComp.MagicData != null && masterComp.MagicData.AllMagicPowersWithSkills.FirstOrDefault((MagicPower x) => x.abilityDef == TorannMagicDefOf.TM_Golemancy).learned)
                 {
                     float pSev = .5f + masterComp.MagicData.GetSkill_Power(TorannMagicDefOf.TM_Golemancy).level;

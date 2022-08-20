@@ -191,7 +191,7 @@ namespace TorannMagic
                             {
                                 cleaveVictim.TakeDamage(dinfo);
                                 FleckMaker.ThrowMicroSparks(cleaveVictim.Position.ToVector3(), map);
-                                CompAbilityUserMight comp = caster.GetComp<CompAbilityUserMight>();
+                                CompAbilityUserMight comp = caster.GetCompAbilityUserMight();
                                 MightPowerSkill ver = comp.MightData.MightPowerSkill_Whirlwind.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Whirlwind_ver");
                                 DamageInfo dinfo2 = new DamageInfo(TMDamageDefOf.DamageDefOf.TM_Whirlwind, weaponDmg, 0, (float)-1, caster, null, null, DamageInfo.SourceCategory.ThingOrUnknown);
                                 System.Random random = new System.Random();
@@ -211,7 +211,7 @@ namespace TorannMagic
         private int GetWeaponDmg(Pawn caster)
         {
             int dmgNum = 1;
-            CompAbilityUserMight comp = caster.GetComp<CompAbilityUserMight>();
+            CompAbilityUserMight comp = caster.GetCompAbilityUserMight();
             MightPowerSkill pwr = comp.MightData.MightPowerSkill_Whirlwind.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Whirlwind_pwr");
             ThingWithComps arg_3C_0;
             if (caster == null)
@@ -258,7 +258,7 @@ namespace TorannMagic
             if (target != null && pawn != null)
             {
                 arg_40_0 = target.IsValid;
-                arg_41_0 = target.ToVector3().InBounds(pawn.Map);
+                arg_41_0 = target.ToVector3().InBoundsWithNullCheck(pawn.Map);
                 arg_42_0 = true; // target.Standable(pawn.Map);
                 vflag = arg_40_0 && arg_41_0 && arg_42_0;
                 if (vflag)

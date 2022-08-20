@@ -17,7 +17,7 @@ namespace TorannMagic
         //    {
         //        return this.verbProps.targetParams.canTargetSelf;
         //    }
-        //    if (targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
+        //    if (targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
         //    {
         //        if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
         //        {
@@ -41,11 +41,11 @@ namespace TorannMagic
             bool result = false;
             Pawn pawn = this.CasterPawn;
             verVal = TM_Calc.GetSkillVersatilityLevel(pawn, this.Ability.Def as TMAbilityDef);
-            //verVal = TM_Calc.GetMightSkillLevel(pawn, pawn.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_PsionicBlast, "TM_PsionicBlast", "_ver", true);
-            //this.verVal = pawn.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_PsionicBlast.FirstOrDefault((MightPowerSkill x) => x.label == "TM_PsionicBlast_ver").level;
+            //verVal = TM_Calc.GetMightSkillLevel(pawn, pawn.GetCompAbilityUserMight().MightData.MightPowerSkill_PsionicBlast, "TM_PsionicBlast", "_ver", true);
+            //this.verVal = pawn.GetCompAbilityUserMight().MightData.MightPowerSkill_PsionicBlast.FirstOrDefault((MightPowerSkill x) => x.label == "TM_PsionicBlast_ver").level;
             //if (pawn.story.traits.HasTrait(TorannMagicDefOf.Faceless))
             //{
-            //    this.verVal = pawn.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_ver").level;
+            //    this.verVal = pawn.GetCompAbilityUserMight().MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_ver").level;
             //}
             Map map = this.CasterPawn.Map;
             IntVec3 targetVariation = this.currentTarget.Cell;

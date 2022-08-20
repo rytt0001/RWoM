@@ -16,7 +16,7 @@ namespace TorannMagic
         bool validTarg;
         public override bool CanHitTargetFrom(IntVec3 root, LocalTargetInfo targ)
         {
-            if (targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map))
+            if (targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map))
             {
                 if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
                 {
@@ -38,9 +38,9 @@ namespace TorannMagic
         protected override bool TryCastShot()
         {
             bool flag = false;
-            CompAbilityUserMight comp = base.CasterPawn.GetComp<CompAbilityUserMight>();
-            MightPowerSkill pwr = base.CasterPawn.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_AnimalFriend.FirstOrDefault((MightPowerSkill x) => x.label == "TM_AnimalFriend_pwr");
-            MightPowerSkill ver = base.CasterPawn.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_AnimalFriend.FirstOrDefault((MightPowerSkill x) => x.label == "TM_AnimalFriend_ver");
+            CompAbilityUserMight comp = base.CasterPawn.GetCompAbilityUserMight();
+            MightPowerSkill pwr = base.CasterPawn.GetCompAbilityUserMight().MightData.MightPowerSkill_AnimalFriend.FirstOrDefault((MightPowerSkill x) => x.label == "TM_AnimalFriend_pwr");
+            MightPowerSkill ver = base.CasterPawn.GetCompAbilityUserMight().MightData.MightPowerSkill_AnimalFriend.FirstOrDefault((MightPowerSkill x) => x.label == "TM_AnimalFriend_ver");
             Pawn pawn = this.CasterPawn;
             Pawn animal = this.currentTarget.Thing as Pawn;
 

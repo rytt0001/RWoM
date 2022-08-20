@@ -57,7 +57,7 @@ namespace TorannMagic
             bool spawned = base.Pawn.Spawned && Pawn.skills != null && !Pawn.Dead;
             if (spawned && !caster.DestroyedOrNull() && !caster.Dead && !caster.Downed)
             {                
-                CompAbilityUserMagic comp = caster.TryGetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic comp = caster.GetCompAbilityUserMagic();
                 if(comp != null && comp.MagicData != null)
                 {
                     if (comp.MagicData.GetSkill_Power(TorannMagicDefOf.TM_HarvestPassion) != null)
@@ -134,7 +134,7 @@ namespace TorannMagic
                             {
                                 if (Pawn.needs.joy != null)
                                 {
-                                    float joyDrainPawn = Rand.Range(.04f, .1f) + (.01f * verVal);
+                                    float joyDrainPawn = Rand.Range(.04f, .1f) + (.01f * effVal);
                                     float joyDrainCaster = Rand.Range(.03f, .06f) - (.01f * effVal);
 
                                     Need np = Pawn.needs.joy;
@@ -144,6 +144,10 @@ namespace TorannMagic
                                     if (np.CurLevel <= .01f && Rand.Chance(.25f + (.05f * pwrVal)))
                                     {
                                         StealPassion();
+                                        if(CheckAnyPassions() && Rand.Chance(.3f + (.2f * pwrVal)))
+                                        {
+                                            StealPassion();
+                                        }
                                         shouldRemove = true;
                                     }
                                 }

@@ -5,6 +5,7 @@ using RimWorld;
 using System.Linq;
 using System.Collections.Generic;
 
+
 namespace TorannMagic
 {
     [StaticConstructorOnStartup]
@@ -30,7 +31,7 @@ namespace TorannMagic
             {
                 return this.verbProps.targetParams.canTargetSelf;
             }
-            if (targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
+            if (targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
             {
                 if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
                 {
@@ -82,7 +83,7 @@ namespace TorannMagic
 
         public static int GetWeaponDmg(Pawn pawn)
         {
-            CompAbilityUserMight comp = pawn.GetComp<CompAbilityUserMight>();
+            CompAbilityUserMight comp = pawn.GetCompAbilityUserMight();
             verVal = TM_Calc.GetSkillVersatilityLevel(pawn, TorannMagicDefOf.TM_SeismicSlash, true);
             pwrVal = TM_Calc.GetSkillPowerLevel(pawn, TorannMagicDefOf.TM_SeismicSlash);
             //MightPowerSkill pwr = comp.MightData.MightPowerSkill_SeismicSlash.FirstOrDefault((MightPowerSkill x) => x.label == "TM_SeismicSlash_pwr");
@@ -108,7 +109,7 @@ namespace TorannMagic
 
         protected override bool TryCastShot()
         {
-            CompAbilityUserMight comp = this.CasterPawn.GetComp<CompAbilityUserMight>();
+            CompAbilityUserMight comp = this.CasterPawn.GetCompAbilityUserMight();
             //MightPowerSkill ver = comp.MightData.MightPowerSkill_SeismicSlash.FirstOrDefault((MightPowerSkill x) => x.label == "TM_SeismicSlash_ver");
             pwrVal = TM_Calc.GetSkillPowerLevel(CasterPawn, this.Ability.Def as TMAbilityDef);
             CellRect cellRect = CellRect.CenteredOn(base.CasterPawn.Position, 1);

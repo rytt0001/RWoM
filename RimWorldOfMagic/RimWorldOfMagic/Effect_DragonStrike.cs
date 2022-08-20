@@ -16,7 +16,7 @@ namespace TorannMagic
             {
                 return this.verbProps.targetParams.canTargetSelf;
             }
-            if (targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
+            if (targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
             {
                 if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
                 {
@@ -48,7 +48,7 @@ namespace TorannMagic
             //    pwrVal = mpwr.level;
             //}
             Pawn casterPawn = base.CasterPawn;
-            CompAbilityUserMight comp = this.CasterPawn.GetComp<CompAbilityUserMight>();
+            CompAbilityUserMight comp = this.CasterPawn.GetCompAbilityUserMight();
             int pwrVal = TM_Calc.GetSkillPowerLevel(casterPawn, this.Ability.Def as TMAbilityDef, false);
             if (comp != null)
             {

@@ -133,7 +133,7 @@ namespace TorannMagic
             fighterBookList.Add(TorannMagicDefOf.BookOfMonk);
             fighterBookList.Add(TorannMagicDefOf.BookOfCommander);
             fighterBookList.Add(TorannMagicDefOf.BookOfSuperSoldier);
-            foreach(TMDefs.TM_CustomClass cc in TM_ClassUtility.CustomClasses())
+            foreach(TMDefs.TM_CustomClass cc in TM_ClassUtility.CustomClasses)
             {
                 if (cc.isFighter && cc.fullScript != null)
                 {
@@ -200,13 +200,52 @@ namespace TorannMagic
                 magicTraits.Add(TorannMagicDefOf.TM_Brightmage);
                 magicTraits.Add(TorannMagicDefOf.TM_Shaman);
                 magicTraits.Add(TorannMagicDefOf.TM_Golemancer);
-                foreach (TMDefs.TM_CustomClass cc in TM_ClassUtility.CustomClasses())
+                foreach (TMDefs.TM_CustomClass cc in TM_ClassUtility.CustomClasses)
                 {
                     if (cc.isMage && !magicTraits.Contains(cc.classTrait))
                     {
                         magicTraits.Add(cc.classTrait);
                     }
                 }
+                return magicTraits;
+            }
+        }
+
+        public static List<TraitDef> EnabledMagicTraits
+        {
+            get
+            {
+                List<TraitDef> magicTraits = new List<TraitDef>();
+                magicTraits.Clear();
+                ModOptions.SettingsRef settingsRef = new ModOptions.SettingsRef();
+                if (settingsRef.Arcanist) { magicTraits.Add(TorannMagicDefOf.Arcanist); }
+                if (settingsRef.FireMage) { magicTraits.Add(TorannMagicDefOf.InnerFire); }
+                if (settingsRef.IceMage) { magicTraits.Add(TorannMagicDefOf.HeartOfFrost); }
+                if (settingsRef.LitMage) { magicTraits.Add(TorannMagicDefOf.StormBorn); }
+                if (settingsRef.Druid) { magicTraits.Add(TorannMagicDefOf.Druid); }
+                if (settingsRef.Priest) { magicTraits.Add(TorannMagicDefOf.Priest); }
+                if (settingsRef.Necromancer) { magicTraits.Add(TorannMagicDefOf.Necromancer); }
+                if (settingsRef.Technomancer) { magicTraits.Add(TorannMagicDefOf.Technomancer); }
+                if (settingsRef.Geomancer) { magicTraits.Add(TorannMagicDefOf.Geomancer); }
+                if (settingsRef.Demonkin) { magicTraits.Add(TorannMagicDefOf.Warlock); }
+                if (settingsRef.Demonkin) { magicTraits.Add(TorannMagicDefOf.Succubus); }
+                if (settingsRef.ChaosMage) { magicTraits.Add(TorannMagicDefOf.ChaosMage); }
+                if (settingsRef.Paladin) { magicTraits.Add(TorannMagicDefOf.Paladin); }
+                if (settingsRef.Summoner) { magicTraits.Add(TorannMagicDefOf.Summoner); }
+                if (settingsRef.Bard) { magicTraits.Add(TorannMagicDefOf.TM_Bard); }
+                if (settingsRef.Chronomancer) { magicTraits.Add(TorannMagicDefOf.Chronomancer); }
+                if (settingsRef.Enchanter) { magicTraits.Add(TorannMagicDefOf.Enchanter); }
+                if (settingsRef.BloodMage) { magicTraits.Add(TorannMagicDefOf.BloodMage); }
+                if (settingsRef.Brightmage) { magicTraits.Add(TorannMagicDefOf.TM_Brightmage); }
+                if (settingsRef.Shaman) { magicTraits.Add(TorannMagicDefOf.TM_Shaman); }
+                if (settingsRef.Golemancer) { magicTraits.Add(TorannMagicDefOf.TM_Golemancer); }
+                foreach (TMDefs.TM_CustomClass cc in TM_ClassUtility.CustomClasses)
+                {
+                    if (cc.isMage && !magicTraits.Contains(cc.classTrait) && ModOptions.Settings.Instance.CustomClass[cc.classTrait.ToString()])
+                    {
+                        magicTraits.Add(cc.classTrait);
+                    }
+                }               
                 return magicTraits;
             }
         }
@@ -228,7 +267,7 @@ namespace TorannMagic
                 mightTraits.Add(TorannMagicDefOf.TM_Commander);
                 mightTraits.Add(TorannMagicDefOf.TM_SuperSoldier);
                 mightTraits.Add(TorannMagicDefOf.TM_Wayfarer);
-                foreach (TMDefs.TM_CustomClass cc in TM_ClassUtility.CustomClasses())
+                foreach (TMDefs.TM_CustomClass cc in TM_ClassUtility.CustomClasses)
                 {
                     if (cc.isFighter && !mightTraits.Contains(cc.classTrait))
                     {

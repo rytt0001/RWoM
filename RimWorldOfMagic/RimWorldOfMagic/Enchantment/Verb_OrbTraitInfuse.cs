@@ -18,7 +18,7 @@ namespace TorannMagic.Enchantment
             {
                 return this.verbProps.targetParams.canTargetSelf;
             }
-            if (targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
+            if (targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
             {
                 if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
                 {
@@ -43,9 +43,8 @@ namespace TorannMagic.Enchantment
             
             if (this.currentTarget != null && base.CasterPawn != null)
             {
-                if(this.currentTarget.Thing != null && this.currentTarget.Thing is Pawn)
+                if(this.currentTarget.Thing != null && this.currentTarget.Thing is Pawn victim)
                 {
-                    Pawn victim = this.currentTarget.Thing as Pawn;
                     if(victim.Faction != null && victim.RaceProps.Humanlike && victim.story != null && victim.story.traits != null && !TM_Calc.IsUndeadNotVamp(victim))
                     {
                         int traitsApplied = 0;

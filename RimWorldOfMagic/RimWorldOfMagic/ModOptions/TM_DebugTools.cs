@@ -37,7 +37,7 @@ namespace TorannMagic.ModOptions
             {
                 bool addMagicComp = false;
                 bool addMightComp = false;
-                CompAbilityUserMagic compMagic = pawn.TryGetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic compMagic = pawn.GetCompAbilityUserMagic();
                 if(compMagic != null && compMagic.IsMagicUser)
                 {
                     RemoveMagicComp(compMagic);
@@ -51,7 +51,7 @@ namespace TorannMagic.ModOptions
                         Log.Warning("failed to remove magic comp");
                     }
                 }
-                CompAbilityUserMight compMight = pawn.TryGetComp<CompAbilityUserMight>();
+                CompAbilityUserMight compMight = pawn.GetCompAbilityUserMight();
                 if(compMight != null && compMight.IsMightUser)
                 {
                     RemoveMightComp(compMight);
@@ -286,6 +286,41 @@ namespace TorannMagic.ModOptions
                     }
                 }
                 Traverse.Create(root: p).Field(name: "comps").SetValue(comps);
+            }
+        }
+
+        [DebugAction("RWoM", "Spawn Spirit", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        public static void SpawnSpirit()
+        {            
+            Pawn spiritPawn = TM_Action.GenerateSpiritPawn(UI.MouseCell(), Faction.OfPlayer);            
+            GenSpawn.Spawn(spiritPawn, UI.MouseCell(), Find.CurrentMap);  
+        }
+
+        [DebugAction("RWoM", "T: -20% Spirit", actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        public static void ReduceSpirit(Pawn pawn)
+        {
+            //Pawn pawn = Find.CurrentMap.thingGrid.ThingsAt(UI.MouseCell()).Where((Thing t) => t is Pawn).Cast<Pawn>().FirstOrDefault();
+            if (pawn != null && pawn.needs != null)
+            {
+                Need_Spirit ns = pawn.needs.TryGetNeed(TorannMagicDefOf.TM_SpiritND) as Need_Spirit;
+                if(ns != null)
+                {
+                    ns.GainNeed(-20f);
+                }
+            }
+        }
+
+        [DebugAction("RWoM", "T: +20% Spirit", actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        public static void GainSpirit(Pawn pawn)
+        {
+            //Pawn pawn = Find.CurrentMap.thingGrid.ThingsAt(UI.MouseCell()).Where((Thing t) => t is Pawn).Cast<Pawn>().FirstOrDefault();
+            if (pawn != null && pawn.needs != null)
+            {
+                Need_Spirit ns = pawn.needs.TryGetNeed(TorannMagicDefOf.TM_SpiritND) as Need_Spirit;
+                if (ns != null)
+                {
+                    ns.GainNeed(20f);
+                }
             }
         }
     }

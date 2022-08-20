@@ -14,7 +14,7 @@ namespace TorannMagic
 
         public override bool CanHitTargetFrom(IntVec3 root, LocalTargetInfo targ)
         {            
-            if ( targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map))
+            if ( targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map))
             {
                 if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
                 {
@@ -56,21 +56,18 @@ namespace TorannMagic
         {
             bool result = false;
 
-            if (this.currentTarget != null && base.CasterPawn != null && this.currentTarget.Thing is Pawn)
+            if (this.currentTarget != null && base.CasterPawn != null && this.currentTarget.Thing is Pawn targetPawn)
             {
-                Pawn targetPawn = this.currentTarget.Thing as Pawn;
                 if (targetPawn.RaceProps.Humanlike)
                 {
-                    CompAbilityUserMight mightPawn = targetPawn.GetComp<CompAbilityUserMight>();
-
-                    TMAbilityDef tempAbility = null;
-                    CompAbilityUserMight mightComp = this.CasterPawn.GetComp<CompAbilityUserMight>();
+                    CompAbilityUserMight mightPawn = targetPawn.GetCompAbilityUserMight();
+                    CompAbilityUserMight mightComp = this.CasterPawn.GetCompAbilityUserMight();
                     
                     if (mightPawn.IsMightUser)
                     {
                         if (!targetPawn.story.traits.HasTrait(TM_Calc.GetMightTrait(this.CasterPawn)))
                         {
-                            tempAbility = TM_Calc.GetCopiedMightAbility(targetPawn, base.CasterPawn);
+                            TMAbilityDef tempAbility = TM_Calc.GetCopiedMightAbility(targetPawn, base.CasterPawn);
 
                             if (tempAbility != null)
                             {

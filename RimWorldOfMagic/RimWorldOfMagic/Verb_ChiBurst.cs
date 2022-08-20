@@ -20,7 +20,7 @@ namespace TorannMagic
             {
                 return this.verbProps.targetParams.canTargetSelf;
             }
-            if (targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
+            if (targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
             {
                 if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
                 {
@@ -43,7 +43,7 @@ namespace TorannMagic
         {
             bool result = false;
             Pawn caster = this.CasterPawn;
-            this.pwrVal = caster.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_Chi.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Chi_pwr").level;
+            this.pwrVal = caster.GetCompAbilityUserMight().MightData.MightPowerSkill_Chi.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Chi_pwr").level;
             ModOptions.SettingsRef settingsRef = new ModOptions.SettingsRef();
             if (!caster.IsColonist && settingsRef.AIHardMode)
             {
@@ -112,7 +112,7 @@ namespace TorannMagic
             float energyBurn = 0;
             if (TM_Calc.IsMightUser(pawn))
             {
-                CompAbilityUserMight mightComp = pawn.GetComp<CompAbilityUserMight>();
+                CompAbilityUserMight mightComp = pawn.GetCompAbilityUserMight();
                 classHediff = pawn.health.hediffSet.GetFirstHediffOfDef(TorannMagicDefOf.TM_PsionicHD);
                 classHediff = pawn.health.hediffSet.GetFirstHediffOfDef(TorannMagicDefOf.TM_HateHD);
                 classHediff = pawn.health.hediffSet.GetFirstHediffOfDef(TorannMagicDefOf.TM_ChiHD);
@@ -125,7 +125,7 @@ namespace TorannMagic
             }
             else if (TM_Calc.IsMagicUser(pawn))
             {
-                CompAbilityUserMagic magicComp = pawn.GetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic magicComp = pawn.GetCompAbilityUserMagic();
                 classHediff = pawn.health.hediffSet.GetFirstHediffOfDef(TorannMagicDefOf.TM_BloodHD);
                 if (magicComp != null && magicComp.Mana != null)
                 {

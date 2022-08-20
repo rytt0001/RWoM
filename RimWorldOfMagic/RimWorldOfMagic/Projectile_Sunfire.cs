@@ -70,7 +70,7 @@ namespace TorannMagic
         private void Initialize()
         {
             caster = this.launcher as Pawn;
-            CompAbilityUserMagic comp = caster.GetComp<CompAbilityUserMagic>();
+            CompAbilityUserMagic comp = caster.GetCompAbilityUserMagic();
             if (comp != null && comp.MagicData != null)
             {
                 //pwrVal = TM_Calc.GetMagicSkillLevel(caster, comp.MagicData.MagicPowerSkill_Sunfire, "TM_Sunfire", "_pwr", true);
@@ -118,14 +118,14 @@ namespace TorannMagic
                 Vector3 rndPos = centerPos;
                 rndPos.x += Rand.Range(-this.radius, this.radius);
                 rndPos.z += Rand.Range(-this.radius, this.radius);
-                if(!rndPos.InBounds(this.Map))
+                if(!rndPos.InBoundsWithNullCheck(this.Map))
                 {
                     continue;
                 }                
                 Vector3 dstPos = rndPos;
                 dstPos.x += Rand.Range(-this.radius, this.radius);
                 dstPos.z += Rand.Range(-this.radius, this.radius);
-                if (!dstPos.InBounds(this.Map))
+                if (!dstPos.InBoundsWithNullCheck(this.Map))
                 {
                     continue;
                 }

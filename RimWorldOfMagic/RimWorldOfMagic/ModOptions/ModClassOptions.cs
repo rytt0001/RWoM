@@ -6,6 +6,7 @@ using Verse;
 using UnityEngine;
 using System.Text;
 using HarmonyLib;
+using TorannMagic.Utils;
 
 namespace TorannMagic.ModOptions
 {
@@ -13,10 +14,56 @@ namespace TorannMagic.ModOptions
     {
         public ModClassOptions(ModContentPack mcp) : base(mcp)
         {
-            LongEventHandler.ExecuteWhenFinished(new Action(ModClassOptions.CheckForDisabledCustomClass));
-            LongEventHandler.ExecuteWhenFinished(new Action(ModClassOptions.RestrictClasses));
-            LongEventHandler.ExecuteWhenFinished(new Action(ModClassOptions.InitializeFactionSettings));
-            LongEventHandler.ExecuteWhenFinished(new Action(ModClassOptions.InitializeCustomClassActions));
+            LongEventHandler.ExecuteWhenFinished(TM_ClassUtility.LoadCustomClasses);
+            LongEventHandler.ExecuteWhenFinished(CheckForDisabledCustomClass);
+            LongEventHandler.ExecuteWhenFinished(RestrictClasses);
+            LongEventHandler.ExecuteWhenFinished(InitializeFactionSettings);
+            LongEventHandler.ExecuteWhenFinished(InitializeCustomClassActions);
+            LongEventHandler.ExecuteWhenFinished(InitializeModBackstories);
+        }
+
+        private static void InitializeModBackstories()
+        {
+            Backstory TM_SpiritBS = new Backstory()
+            {
+                identifier = "tm_childhood_spirit",
+                slot = BackstorySlot.Childhood,
+                title = "TM_SpiritVerbatum".Translate(),
+                baseDesc = "TM_BaseSpiritDesc".Translate(),
+            };
+            BackstoryDatabase.AddBackstory(TM_SpiritBS);
+            Backstory TM_AncientSpiritBS = new Backstory()
+            {
+                identifier = "tm_ancient_spirit",
+                slot = BackstorySlot.Adulthood,
+                title = "TM_AncientSpiritVerbatum".Translate(),
+                baseDesc = "TM_AncientSpiritDesc".Translate(),
+            };
+            BackstoryDatabase.AddBackstory(TM_AncientSpiritBS);
+            Backstory TM_VengefulSpiritBS = new Backstory()
+            {
+                identifier = "tm_vengeful_spirit",
+                slot = BackstorySlot.Adulthood,
+                title = "TM_VengefulSpiritVerbatum".Translate(),
+                baseDesc = "TM_VengefulSpiritDesc".Translate(),
+            };
+            BackstoryDatabase.AddBackstory(TM_VengefulSpiritBS);
+            Backstory TM_LostSpiritBS = new Backstory()
+            {
+                identifier = "tm_lost_spirit",
+                slot = BackstorySlot.Adulthood,
+                title = "TM_LostSpiritVerbatum".Translate(),
+                baseDesc = "TM_LostSpiritDesc".Translate(),
+            };
+            BackstoryDatabase.AddBackstory(TM_LostSpiritBS);
+            Backstory TM_RegretSpiritBS = new Backstory()
+            {
+                identifier = "tm_regret_spirit",
+                slot = BackstorySlot.Adulthood,
+                title = "TM_RegretSpiritVerbatum".Translate(),
+                baseDesc = "TM_RegretSpiritDesc".Translate(),
+            };
+            BackstoryDatabase.AddBackstory(TM_RegretSpiritBS);
         }
 
         private static void InitializeFactionSettings()
@@ -31,9 +78,9 @@ namespace TorannMagic.ModOptions
                 Settings.Instance.CustomClass = new Dictionary<string, bool>();
                 Settings.Instance.CustomClass.Clear();
             }
-            for (int i = 0; i < TM_ClassUtility.CustomClasses().Count; i++)
+            for (int i = 0; i < TM_ClassUtility.CustomClasses.Count; i++)
             {
-                TMDefs.TM_CustomClass customClass = TM_ClassUtility.CustomClasses()[i];
+                TMDefs.TM_CustomClass customClass = TM_ClassUtility.CustomClasses[i];
                 if(!Settings.Instance.CustomClass.Keys.Contains(customClass.classTrait.ToString()))
                 {
                     Settings.Instance.CustomClass.Add(customClass.classTrait.ToString(), true);
@@ -46,10 +93,37 @@ namespace TorannMagic.ModOptions
             //Conflicting trait levelset
             List<TraitDef> customTraits = new List<TraitDef>();
             customTraits.Clear();
-            for (int i = 0; i < TM_ClassUtility.CustomClasses().Count; i++)
+            const string customIconType = "TM_Icon_Custom";
+            for (int i = 0; i < TM_ClassUtility.CustomClasses.Count; i++)
             {
-                TMDefs.TM_CustomClass customClass = TM_ClassUtility.CustomClasses()[i];
-                customTraits.AddDistinct(customClass.classTrait);
+                TMDefs.TM_CustomClass customClass = TM_ClassUtility.CustomClasses[i];
+                //customTraits.AddDistinct(customClass.classTrait);
+                if (customTraits.Contains(customClass.classTrait))
+                {
+                    Log.Warning($"RimWorld of Magic trait {customClass.classTrait} already added. This is likely a naming conflict between mods.");
+                }
+                else
+                {
+                    // Map the trait to the texture to avoid having to TryGetComp
+                    // Get material
+                    Material mat = TM_RenderQueue.fighterMarkMat;
+                    if (customClass.classIconPath != "")
+                        mat = MaterialPool.MatFrom("Other/" + customClass.classIconPath);
+                    else if (customClass.classTexturePath != "")
+                        mat = MaterialPool.MatFrom("Other/ClassTextures/" + customClass.classTexturePath, true);
+                    mat.color = customClass.classIconColor;
+
+                    // Get texture
+                    Texture2D customTexture = TM_MatPool.DefaultCustomMageIcon;
+                    if (customClass.classTexturePath != "")
+                    {
+                        customTexture = ContentFinder<Texture2D>.Get("Other/ClassTextures/" + customClass.classTexturePath, true);
+                    }
+
+                    TraitIconMap.Set(customClass.classTrait, new TraitIconMap.TraitIconValue(mat, customTexture, customIconType));
+                    // Add custom trait to list for processing
+                    customTraits.Add(customClass.classTrait);
+                }
                 customClass.classTrait.conflictingTraits.AddRange(TM_Data.AllClassTraits);
             }
 

@@ -515,7 +515,7 @@ namespace TorannMagic
         {
             if (!CasterPawn.DestroyedOrNull() && !CasterPawn.Dead)
             {
-                CompAbilityUserMagic comp = CasterPawn.TryGetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic comp = CasterPawn.GetCompAbilityUserMagic();
                 //int verVal = TM_Calc.GetMagicSkillLevel(CasterPawn, comp.MagicData.MagicPowerSkill_LivingWall, "TM_LivingWall", "_ver", true);
                 //int pwrVal = TM_Calc.GetMagicSkillLevel(CasterPawn, comp.MagicData.MagicPowerSkill_LivingWall, "TM_LivingWall", "_pwr", true);
                 int verVal = TM_Calc.GetSkillVersatilityLevel(CasterPawn, TorannMagicDefOf.TM_LivingWall, true);
@@ -593,7 +593,7 @@ namespace TorannMagic
                     DoDirectActions();
                     if (!shouldDestroy)
                     {
-                        bool flag = !this.ExactPosition.InBounds(base.Map);
+                        bool flag = !this.ExactPosition.InBoundsWithNullCheck(base.Map);
                         if (flag)
                         {
                             this.ticksToImpact++;
@@ -625,7 +625,7 @@ namespace TorannMagic
                                     }
                                     else
                                     {
-                                        bool flag3 = this.DestinationCell.InBounds(base.Map);
+                                        bool flag3 = this.DestinationCell.InBoundsWithNullCheck(base.Map);
                                         if (flag3)
                                         {
                                             base.Position = this.DestinationCell;
@@ -636,7 +636,7 @@ namespace TorannMagic
                                 }
                                 else
                                 {
-                                    bool flag3 = this.DestinationCell.InBounds(base.Map);
+                                    bool flag3 = this.DestinationCell.InBoundsWithNullCheck(base.Map);
                                     if (flag3)
                                     {
                                         base.Position = this.DestinationCell;

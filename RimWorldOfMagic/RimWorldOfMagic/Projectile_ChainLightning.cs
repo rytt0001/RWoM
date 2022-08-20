@@ -63,7 +63,7 @@ namespace TorannMagic
             if(!p.DestroyedOrNull())
             {
                 GenClamor.DoClamor(this, 2f, ClamorDefOf.Ability);
-                CompAbilityUserMagic comp = p.TryGetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic comp = p.GetCompAbilityUserMagic();
                 if (comp != null && comp.MagicData != null)
                 {
                     //pwrVal = TM_Calc.GetMagicSkillLevel(p, comp.MagicData.MagicPowerSkill_ChainLightning, "TM_ChainLightning", "_pwr", true);
@@ -184,7 +184,7 @@ namespace TorannMagic
 
         public void DamageCell(IntVec3 c, Pawn caster)
         {
-            if (c != default(IntVec3) && c.IsValid && c.InBounds(this.Map))
+            if (c != default(IntVec3) && c.IsValid && c.InBoundsWithNullCheck(this.Map))
             {
                 FleckMaker.ThrowLightningGlow(c.ToVector3Shifted(), this.Map, 1f);
                 List<Thing> thingList = c.GetThingList(this.Map);

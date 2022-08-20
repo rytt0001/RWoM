@@ -5,6 +5,7 @@ using AbilityUser;
 using UnityEngine;
 using System.Linq;
 
+
 namespace TorannMagic
 {
     class Verb_Transpose : Verb_UseAbility  
@@ -15,7 +16,7 @@ namespace TorannMagic
 
         public override bool CanHitTargetFrom(IntVec3 root, LocalTargetInfo targ)
         {            
-            if ( targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map) && targ.Thing != this.CasterPawn)
+            if ( targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map) && targ.Thing != this.CasterPawn)
             {
                 if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
                 {
@@ -46,7 +47,7 @@ namespace TorannMagic
                 IntVec3 arg_29_0 = this.currentTarget.Cell;
                 Vector3 vector = this.currentTarget.CenterVector3;
                 arg_40_0 = this.currentTarget.Cell.IsValid;
-                arg_41_0 = vector.InBounds(base.CasterPawn.Map);                
+                arg_41_0 = vector.InBoundsWithNullCheck(base.CasterPawn.Map);                
                 arg_42_0 = targetThing is Pawn; 
             }
             else
@@ -91,7 +92,7 @@ namespace TorannMagic
                             {
                                 CameraJumper.TryJumpAndSelect(p);
                             }
-                            CompAbilityUserMight comp = this.CasterPawn.GetComp<CompAbilityUserMight>();
+                            CompAbilityUserMight comp = this.CasterPawn.GetCompAbilityUserMight();
                             MightPowerSkill ver = comp.MightData.MightPowerSkill_Transpose.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Transpose_ver");
                             if (ver.level < 1)
                             {

@@ -14,7 +14,7 @@ namespace TorannMagic.Enchantment
         //Used specifically for non-unique verbs that ignore LOS (can be used with shield belt)
         public override bool CanHitTargetFrom(IntVec3 root, LocalTargetInfo targ)
         {
-            if (targ.IsValid && targ.CenterVector3.InBounds(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
+            if (targ.IsValid && targ.CenterVector3.InBoundsWithNullCheck(base.CasterPawn.Map) && !targ.Cell.Fogged(base.CasterPawn.Map) && targ.Cell.Walkable(base.CasterPawn.Map))
             {
                 if ((root - targ.Cell).LengthHorizontal < this.verbProps.range)
                 {
@@ -36,12 +36,11 @@ namespace TorannMagic.Enchantment
         protected override bool TryCastShot()
         {
             bool result = false;
-            CompAbilityUserMagic comp = this.CasterPawn.GetComp<CompAbilityUserMagic>();
+            CompAbilityUserMagic comp = this.CasterPawn.GetCompAbilityUserMagic();
             if (this.currentTarget != null && base.CasterPawn != null && comp != null)
             {
-                if(this.currentTarget.Thing != null && this.currentTarget.Thing is Pawn)
+                if(this.currentTarget.Thing != null && this.currentTarget.Thing is Pawn traitor)
                 {
-                    Pawn traitor = this.currentTarget.Thing as Pawn;
                     if(traitor.Faction != null && traitor.Faction != this.CasterPawn.Faction && traitor.RaceProps.Humanlike)
                     {
                         if (Rand.Chance(TM_Calc.GetSpellSuccessChance(this.CasterPawn, traitor, true)))
@@ -121,7 +120,7 @@ namespace TorannMagic.Enchantment
                         }
                     }
                 }
-                CompAbilityUserMagic comp = this.CasterPawn.GetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic comp = this.CasterPawn.GetCompAbilityUserMagic();
                 if(comp != null)
                 {
                     comp.RemovePawnAbility(TorannMagicDefOf.TM_Artifact_Conviction);

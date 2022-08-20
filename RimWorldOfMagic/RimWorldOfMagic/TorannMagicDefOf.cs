@@ -138,6 +138,7 @@ namespace TorannMagic
         public static ThingDef FlyingObject_Spinning;
         public static ThingDef FlyingObject_DirtDevil;
         public static ThingDef FlyingObject_LightningTrap;
+        public static ThingDef FlyingObject_FreezingWinds;
 
         public static GameConditionDef ManaDrain;
         public static GameConditionDef ManaSurge;
@@ -576,6 +577,7 @@ namespace TorannMagic
         public static TMAbilityDef TM_BloodForBlood;
         public static HediffDef TM_BloodForBloodHD;
         public static TMAbilityDef TM_BloodShield;
+        public static HediffDef TM_BloodShieldHD;
         public static TMAbilityDef TM_Rend;
         public static TMAbilityDef TM_Rend_I;
         public static TMAbilityDef TM_Rend_II;
@@ -766,6 +768,28 @@ namespace TorannMagic
         public static HediffDef TM_OutOfBodyHD;
         public static TMAbilityDef TM_FadeEmotions;
 
+        //Possessed
+        public static TraitDef TM_Possessed; //possessing a body
+        public static TraitDef TM_Possessor; //free floating spirit
+
+        public static PawnKindDef TM_SpiritPKD;
+        public static ThingDef TM_SpiritTD;
+        public static HediffDef TM_SpiritPossessorHD;
+        public static NeedDef TM_SpiritND;
+        public static TMAbilityDef TM_SpiritPossession;
+        public static TMAbilityDef TM_SpiritDrain;
+        public static JobDef JobDriver_SpiritDrain;
+        public static HediffDef TM_SpiritDrainHD;
+        public static ThoughtDef TM_SpiritDrainTD;
+        public static TMAbilityDef TM_DistortSpirit;
+        public static HediffDef TM_SpiritDistortionHD;
+        public static TMAbilityDef TM_SummonSpiritAnimalMass;
+        public static TMAbilityDef TM_SpiritRally;
+        public static HediffDef TM_SpiritPossessionHD;        
+        public static TMAbilityDef TM_SpiritStorm;
+        public static ThingDef FlyingObject_SpiritStorm;       
+
+
         //Shadow
         public static TraitDef TM_TheShadow;
 
@@ -935,6 +959,11 @@ namespace TorannMagic
         public static TraitDef DeathKnight;
 
         public static HediffDef TM_HateHD;
+        public static HediffDef TM_HateHD_I;
+        public static HediffDef TM_HateHD_II;
+        public static HediffDef TM_HateHD_III;
+        public static HediffDef TM_HateHD_IV;
+        public static HediffDef TM_HateHD_V;
         public static TMAbilityDef TM_Shroud;
         public static TMAbilityDef TM_WaveOfFear;
         public static HediffDef TM_WaveOfFearHD;
@@ -1173,6 +1202,7 @@ namespace TorannMagic
         public static ThingDef Mote_Twinkle;
         public static ThingDef Mote_Flame;
         public static ThingDef Mote_Ice;
+        public static ThingDef Mote_WhiteIce;
         public static ThingDef Mote_Casting;
         public static ThingDef Mote_AntiCasting;
         public static ThingDef Mote_1sText;
@@ -1234,6 +1264,7 @@ namespace TorannMagic
         public static ThingDef Mote_RedSwirl;
         public static ThingDef Mote_PurpleSmoke;
         public static ThingDef Mote_Psi_Black;
+        public static ThingDef Mote_SpiritCasting;
         
         public static ThingDef Projectile_FogOfTorment;        
 
@@ -1272,6 +1303,9 @@ namespace TorannMagic
         public static EffecterDef TM_FadeEffecter2ED;
         public static EffecterDef TM_AttractionEffecterSmall;
         public static EffecterDef TM_HeatShieldED;
+        public static EffecterDef TM_SpiritDistortionED;
+        public static EffecterDef TM_SpiritPulseED;
+        public static EffecterDef TM_SpiritStormED;
 
         //psychast copies, used with tm_motemaker.makeoverlay
         //adjusts def values on each cast

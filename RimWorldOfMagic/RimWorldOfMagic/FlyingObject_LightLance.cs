@@ -119,7 +119,7 @@ namespace TorannMagic
             if (pawn != null)
             {
                 GetFilteredList();
-                CompAbilityUserMagic comp = pawn.GetComp<CompAbilityUserMagic>();
+                CompAbilityUserMagic comp = pawn.GetCompAbilityUserMagic();
                 if(comp != null)
                 {
                     //pwrVal = comp.MagicData.MagicPowerSkill_LightLance.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_LightLance_pwr").level;
@@ -201,7 +201,7 @@ namespace TorannMagic
             }
             this.ticksToImpact--;            
             base.Position = this.ExactPosition.ToIntVec3();
-            bool flag = !this.ExactPosition.InBounds(base.Map);
+            bool flag = !this.ExactPosition.InBoundsWithNullCheck(base.Map);
             if (flag)
             {
                 this.ticksToImpact++;
@@ -212,7 +212,7 @@ namespace TorannMagic
                 bool flag2 = this.ticksToImpact <= 0 && !impacted;
                 if (flag2)
                 {
-                    bool flag3 = this.DestinationCell.InBounds(base.Map);
+                    bool flag3 = this.DestinationCell.InBoundsWithNullCheck(base.Map);
                     if (flag3)
                     {
                         base.Position = this.DestinationCell;
