@@ -55,7 +55,7 @@ namespace TorannMagic
                  new HarmonyMethod(patchType, nameof(TurretGunTick_Overdrive_Postfix)), null);
             harmonyInstance.Patch(AccessTools.Method(typeof(CompRefuelable), "PostDraw"), new HarmonyMethod(patchType, nameof(CompRefuelable_DrawBar_Prefix)),
                  null, null);
-            harmonyInstance.Patch(AccessTools.Method(typeof(AutoUndrafter), "AutoUndraftTick"), new HarmonyMethod(patchType, nameof(AutoUndrafter_Undead_Prefix)),
+            harmonyInstance.Patch(AccessTools.Method(typeof(AutoUndrafter), "ShouldAutoUndraft"), new HarmonyMethod(patchType, nameof(AutoUndrafter_Undead_Prefix)),
                  null, null);
             harmonyInstance.Patch(AccessTools.Method(typeof(PawnUtility), "IsTravelingInTransportPodWorldObject"),
                  new HarmonyMethod(patchType, nameof(IsTravelingInTeleportPod_Prefix)), null);
@@ -488,9 +488,11 @@ namespace TorannMagic
 
         private static void Get_CanDoRandomMentalBreaks(MentalBreaker __instance, Pawn ___pawn, ref bool __result)
         {
-            if(___pawn != null && __result)
+            if (!__result)
+                return;
+            if(!(___pawn is null))
             {
-                if(___pawn.health != null && ___pawn.health.hediffSet != null && ___pawn.health.hediffSet.HasHediff(TorannMagicDefOf.TM_EmotionSuppressionHD))
+                if(!(___pawn.health is null) /*&& ___pawn.health.hediffSet != null*/ && ___pawn.health.hediffSet.HasHediff(TorannMagicDefOf.TM_EmotionSuppressionHD))
                 {
                     __result = false;
                 }
@@ -2016,11 +2018,10 @@ namespace TorannMagic
 
         public static bool Get_IsColonist_Polymorphed(Pawn __instance, ref bool __result)
         {
-            Pawn p = __instance;
-            if (p != null && p.Faction == Faction.OfPlayerSilentFail)// __instance.GetComp<CompPolymorph>() != null && __instance.GetComp<CompPolymorph>().Original != null && __instance.GetComp<CompPolymorph>().Original.RaceProps.Humanlike)
+            
+            if (__instance is Pawn p && p.Faction == Faction.OfPlayerSilentFail)// __instance.GetComp<CompPolymorph>() != null && __instance.GetComp<CompPolymorph>().Original != null && __instance.GetComp<CompPolymorph>().Original.RaceProps.Humanlike)
             {
-                CompPolymorph cp = __instance.GetComp<CompPolymorph>();
-                if (cp != null && cp.Original != null && cp.Original.RaceProps.Humanlike)
+                if (__instance.GetComp<CompPolymorph>() is CompPolymorph cp && cp.Original != null && cp.Original.RaceProps.Humanlike)
                 {
                     __result = true;
                     return false;
@@ -2323,15 +2324,17 @@ namespace TorannMagic
             }
             return true;
         }
-
-        public static bool AutoUndrafter_Undead_Prefix(AutoUndrafter __instance)
+        static FieldInfo field = typeof(AutoUndrafter).GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
+        public static bool AutoUndrafter_Undead_Prefix(AutoUndrafter __instance, ref bool __result)
         {
-            Pawn pawn = Traverse.Create(root: __instance).Field(name: "pawn").GetValue<Pawn>();
-            if (pawn.health.hediffSet.HasHediff(HediffDef.Named("TM_UndeadHD")))
-            {
-                return false;
-            }
-            return true;
+            //try opti
+            //Pawn pawn = Traverse.Create(root: __instance).Field(name: "pawn").GetValue<Pawn>();
+            //Log.Error($" instance:{__instance.ToStringSafe()} type:{type.ToStringSafe()}");
+            Pawn pawn = (Pawn)field.GetValue(__instance);
+
+            //Log.Error($" pawn:{pawn.ToStringSafe()} field: {type.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance).ToStringSafe()}");
+            __result = !pawn.health.hediffSet.HasHediff(HediffDef.Named("TM_UndeadHD"));
+            return __result;
         }
 
         public static bool PawnRenderer_Blur_Prefix(PawnRenderer __instance, ref Vector3 drawLoc, Pawn ___pawn, Rot4? rotOverride = default(Rot4?), bool neverAimWeapon = false)
@@ -2764,7 +2767,7 @@ namespace TorannMagic
                 __result = false;
                 return false;
             }
-            if (__instance.pawn.health != null && __instance.pawn.health.hediffSet != null)
+            if (!(__instance.pawn.health is null) /*&& !(__instance.pawn.health.hediffSet is null)*/)
             {
                 if (__instance.pawn.health.hediffSet.HasHediff(TorannMagicDefOf.TM_BurningFuryHD) || __instance.pawn.health.hediffSet.HasHediff(TorannMagicDefOf.TM_MoveOutHD) || __instance.pawn.health.hediffSet.HasHediff(TorannMagicDefOf.TM_EnrageHD))
                 {
